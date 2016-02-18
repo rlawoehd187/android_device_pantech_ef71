@@ -392,7 +392,7 @@ int32_t QCameraPerfLock::lock_rel_timed()
     if (mPerfLockEnable) {
         LOGD("E");
         if (mPerfLockHandleTimed < 0) {
-            LOGE("mPerfLockHandle < 0,check if lock is acquired");
+            LOGW("mPerfLockHandle < 0,check if lock is acquired");
             return ret;
         }
         LOGD("perf_handle_rel %d ", mPerfLockHandleTimed);
@@ -434,7 +434,7 @@ int32_t QCameraPerfLock::lock_rel()
     if (mPerfLockEnable) {
         LOGD("E");
         if (mPerfLockHandle < 0) {
-            LOGE("mPerfLockHandle < 0,check if lock is acquired");
+            LOGW("mPerfLockHandle < 0,check if lock is acquired");
             return ret;
         }
         LOGD("perf_handle_rel %d ", mPerfLockHandle);
