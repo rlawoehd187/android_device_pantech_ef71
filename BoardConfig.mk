@@ -116,11 +116,8 @@ QCOM_BT_USE_SMD_TTY := true
 # Camera
 USE_DEVICE_SPECIFIC_CAMERA := true
 USE_CAMERA_STUB := true
-TARGET_PROVIDES_CAMERA_HAL := true
+TARGET_CAMERASERVICE_CLOSES_NATIVE_HANDLES := true
 TARGET_NEEDS_PLATFORM_TEXT_RELOCATIONS := true
-TARGET_PROCESS_SDK_VERSION_OVERRIDE := \
-    /system/bin/mediaserver=22 \
-    /system/vendor/bin/mm-qcamera-daemon=22
 
 # Charger
 BOARD_CHARGER_DISABLE_INIT_BLANK := true
@@ -238,7 +235,8 @@ include device/qcom/sepolicy/sepolicy.mk
 TARGET_LD_SHIM_LIBS := \
     /system/vendor/lib/hw/camera.msm8937.so|/system/lib/libshim_camera.so \
     /system/vendor/bin/mm-qcamera-daemon|libshim_pthreadts.so \
-    /system/vendor/bin/mm-qcamera-daemon|libshim_mutexdestroy.so
+    /system/vendor/bin/mm-qcamera-daemon|libshim_mutexdestroy.so \
+    /system/lib/libshim_camera.so:/system/lib/libcamera_client.so|libshim_cameraclient.so
 
 # Time
 BOARD_USES_QC_TIME_SERVICES := true

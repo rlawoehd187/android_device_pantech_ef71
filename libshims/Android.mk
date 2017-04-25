@@ -55,3 +55,10 @@ LOCAL_MODULE_TAGS := optional
 LOCAL_32_BIT_ONLY := true
 LOCAL_MODULE_CLASS := SHARED_LIBRARIES
 include $(BUILD_SHARED_LIBRARY)
+
+include $(CLEAR_VARS)
+LOCAL_SRC_FILES := \
+    libshim_cameraclient/cameraclient_shim.cpp
+LOCAL_MODULE := libshim_cameraclient
+LOCAL_MODULE_TAGS := optional
+include $(BUILD_SHARED_LIBRARY)
