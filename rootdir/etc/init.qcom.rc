@@ -574,7 +574,8 @@ service loggy /system/bin/sh  /loggy.sh
 
 service cnd /system/bin/cnd
     class main
-    socket cnd stream 660 root inet
+    user system
+    group system wifi inet radio wakelock net_admin
 
 service dpmd /system/bin/dpmd
     class late_start
