@@ -155,7 +155,7 @@ ro.telephony.default_network=5
 telephony.lteOnCdmaDevice=1
 
 # Time service
-persist.timed.enable=true
+persist.delta_time.enable=true
 
 # Trim properties
 ro.sys.fw.bservice_enable=true
