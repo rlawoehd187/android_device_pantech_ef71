@@ -611,13 +611,6 @@ service cnd /vendor/bin/cnd
     user system
     group system wifi inet radio wakelock net_admin
 
-service dpmd /vendor/bin/dpmd
-    class late_start
-    socket dpmd stream 660 root system
-    socket tcm stream 660 root inet
-    socket dpmwrapper stream 660 root inet
-    group system readproc inet
-
 service irsc_util /vendor/bin/irsc_util "/vendor/etc/sec_config"
     class core
     user root
