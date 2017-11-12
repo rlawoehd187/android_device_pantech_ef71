@@ -135,12 +135,6 @@ ENABLE_CPUSETS := true
 # Crypto
 TARGET_HW_DISK_ENCRYPTION := false
 
-# CM Hardware
-#BOARD_USES_CYANOGEN_HARDWARE := true
-#BOARD_HARDWARE_CLASS += \
-    hardware/cyanogen/cmhw \
-    $(DEVICE_PATH)/cmhw
-
 # CNE / DPM
 BOARD_USES_QCNE := true
 
@@ -191,6 +185,10 @@ MALLOC_SVELTE := true
 DEVICE_MANIFEST_FILE := $(DEVICE_PATH)/manifest.xml
 DEVICE_MATRIX_FILE   := $(DEVICE_PATH)/compatibility_matrix.xml
 TARGET_FS_CONFIG_GEN += $(DEVICE_PATH)/config.fs
+
+# Lineage Hardware
+BOARD_HARDWARE_CLASS += \
+    $(DEVICE_PATH)/lineagehw
 
 # Media
 TARGET_USES_MEDIA_EXTENSIONS := true
