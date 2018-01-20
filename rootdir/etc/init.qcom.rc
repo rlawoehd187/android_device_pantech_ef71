@@ -623,6 +623,7 @@ service rfs_access /vendor/bin/rfs_access
 service tftp_server /vendor/bin/tftp_server
    class main
    user root
+    group root system
 
 on property:wc_transport.start_hci=true
     start start_hci_filter
