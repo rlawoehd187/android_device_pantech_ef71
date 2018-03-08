@@ -740,7 +740,7 @@ service vendor.dataqti /system/vendor/bin/qti
 service sensors /vendor/bin/sensors.qcom
     class core
     user root
-    group root
+    group root system
 
 service qvop-daemon /vendor/bin/qvop-daemon
     class late_start
