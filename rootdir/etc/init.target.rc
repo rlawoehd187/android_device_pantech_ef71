@@ -45,6 +45,11 @@ on fs
 
     chmod 0755 /sys/kernel/debug/tracing
 
+on post-fs
+    start vendor.qseecomd
+    wait_for_prop vendor.sys.listeners.registered true
+    write /dev/ipa 1
+
 on post-fs-data
     mkdir /data/tombstones 0771 system system
     mkdir /tombstones/modem 0771 system system
