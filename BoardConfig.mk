@@ -235,7 +235,9 @@ include device/qcom/sepolicy/sepolicy.mk
 
 # SHIMS
 TARGET_LD_SHIM_LIBS := \
-    /system/vendor/lib/hw/camera.msm8937.so|/system/lib/libshim_camera.so 
+    /system/vendor/lib/hw/camera.msm8937.so|/system/lib/libshim_camera.so \
+    /vendor/bin/mm-qcamera-daemon|libshim_pthreadts.so \
+    /system/bin/cameraserver|libshim_cameraservice.so
 
 # Time
 BOARD_USES_QC_TIME_SERVICES := true
