@@ -3,19 +3,19 @@
     <item name="none">0</item>
     <item name="cpu.idle">2.6</item>
     <item name="cpu.awake">21</item>
-    <array name="cpu.active.cluster0">
+    <array name="cpu.core_power.cluster0">
         <value>65</value>
         <value>73</value>
         <value>84</value>
         <value>118</value>
     </array>
-    <array name="cpu.speeds.cluster0">
+    <array name="cpu.core_speeds.cluster0">
         <value>768000</value>
         <value>902400</value>
         <value>998400</value>
         <value>1094400</value>
     </array>
-    <array name="cpu.active.cluster1">
+    <array name="cpu.core_power.cluster1">
         <value>83</value>
         <value>112</value>
         <value>127</value>
@@ -23,7 +23,7 @@
         <value>145</value>
         <value>155</value>
     </array>
-    <array name="cpu.speeds.cluster1">
+    <array name="cpu.core_speeds.cluster1">
         <value>960000</value>
         <value>1094400</value>
         <value>1209600</value>
