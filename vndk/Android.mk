@@ -1,28 +1,35 @@
 VNDK_SP_LIBRARIES := \
-    android.hardware.graphics.allocator@2.0 \
     android.hardware.graphics.common@1.0 \
+    android.hardware.graphics.common@1.1 \
+    android.hardware.graphics.common@1.2 \
     android.hardware.graphics.mapper@2.0 \
+    android.hardware.graphics.mapper@2.1 \
+    android.hardware.graphics.mapper@3.0 \
     android.hardware.renderscript@1.0 \
     android.hidl.memory@1.0 \
+    android.hidl.memory.token@1.0 \
+    android.hidl.safe_union@1.0 \
     libRSCpuRef \
     libRSDriver \
     libRS_internal \
     libbacktrace \
     libbase \
     libbcinfo \
+    libbinderthreadstate \
     libblas \
     libc++ \
     libcompiler_rt \
     libcutils \
-    libft2 \
     libhardware \
     libhidlbase \
     libhidlmemory \
     libhidltransport \
+    libhwbinder_noltopgo \
     libhwbinder \
     libion \
+    libjsoncpp \
     liblzma \
-    libpng \
+    libprocessgroup \
     libunwind \
     libutils \
     libz
@@ -43,7 +50,7 @@ define define-vndk-lib
 include $$(CLEAR_VARS)
 LOCAL_MODULE := $1.$2
 LOCAL_MODULE_CLASS := SHARED_LIBRARIES
-LOCAL_PREBUILT_MODULE_FILE := $$(TARGET_OUT_INTERMEDIATE_LIBRARIES)/$1.so
+LOCAL_PREBUILT_MODULE_FILE := $$(call intermediates-dir-for,SHARED_LIBRARIES,$1)/$1.so
 LOCAL_STRIP_MODULE := false
 LOCAL_MULTILIB := first
 LOCAL_MODULE_TAGS := optional
@@ -58,7 +65,7 @@ ifneq ($$(TARGET_TRANSLATE_2ND_ARCH),true)
 include $$(CLEAR_VARS)
 LOCAL_MODULE := $1.$2
 LOCAL_MODULE_CLASS := SHARED_LIBRARIES
-LOCAL_PREBUILT_MODULE_FILE := $$($$(TARGET_2ND_ARCH_VAR_PREFIX)TARGET_OUT_INTERMEDIATE_LIBRARIES)/$1.so
+LOCAL_PREBUILT_MODULE_FILE := $$(call intermediates-dir-for,SHARED_LIBRARIES,$1,,,$(TARGET_2ND_ARCH_VAR_PREFIX))/$1.so
 LOCAL_STRIP_MODULE := false
 LOCAL_MULTILIB := 32
 LOCAL_MODULE_TAGS := optional
