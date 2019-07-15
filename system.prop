@@ -63,6 +63,9 @@ persist.camera.HAL3.enabled=1
 persist.ts.postmakeup=true
 persist.ts.rtmakeup=true
 
+# Charger
+ro.charger.enable_suspend=true
+
 # CNE/DPM
 persist.vendor.cne.feature=1
 
