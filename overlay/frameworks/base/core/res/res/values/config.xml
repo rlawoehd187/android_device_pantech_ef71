@@ -467,6 +467,8 @@
         <item>"/system/framework/oat/arm64/services.vdex"</item>
         <item>"/system/framework/boot.vdex"</item>
         <item>"/system/framework/boot-core-libart.vdex"</item>
+        <item>"/apex/com.android.art/javalib/core-oj.jar"</item>
+        <item>"/apex/com.android.art/javalib/core-libart.jar"</item>
     </string-array>
 
     <!-- Should the pinner service pin the Camera application? -->
