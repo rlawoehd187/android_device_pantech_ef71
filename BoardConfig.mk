@@ -232,7 +232,7 @@ TARGET_RECOVERY_FSTAB := $(DEVICE_PATH)/rootdir/etc/recovery.qcom
 # SELinux
 #BOARD_SEPOLICY_DIRS += \
     $(DEVICE_PATH)/sepolicy
-include device/qcom/sepolicy/sepolicy.mk
+include device/qcom/sepolicy-legacy-um/sepolicy.mk
 
 # SHIMS
 TARGET_LD_SHIM_LIBS := \
