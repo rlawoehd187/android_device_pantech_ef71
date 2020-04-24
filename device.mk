@@ -441,6 +441,7 @@ PRODUCT_PACKAGES += \
     wificond \
     wifilogd \
     libwpa_client \
+    WifiOverlay \
     wpa_supplicant \
     wpa_supplicant.conf \
     wcnss_service
