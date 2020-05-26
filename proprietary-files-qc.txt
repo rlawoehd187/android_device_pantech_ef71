@@ -647,8 +647,6 @@ vendor/bin/thermal-engine
 -vendor/lib64/libthermalclient.so
 
 # Time services - from TA-1024
--vendor/app/TimeService/TimeService.apk
-vendor/bin/time_daemon
 -vendor/lib/libtime_genoff.so
 -vendor/lib64/libtime_genoff.so
 
