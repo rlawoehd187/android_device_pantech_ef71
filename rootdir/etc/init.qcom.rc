@@ -434,9 +434,6 @@ on post-fs-data
     mkdir /data/fota 0771
     chown system system /data/fota
 
-    # Create /data/vendor/time folder for time-services
-    mkdir /data/vendor/time/ 0700 system system
-
     setprop vold.post_fs_data_done 1
 
     #Create a folder for SRS to be able to create a usercfg file
@@ -901,11 +898,6 @@ on property:init.svc.surfaceflinger=restarting
     stop  vendor.hwcomposer-2-2
     start vendor.hwcomposer-2-1
     start vendor.hwcomposer-2-2
-
-service time_daemon /system/vendor/bin/time_daemon
-    class main
-    user root
-    group root
 
 service vendor.move_time_data /system/bin/move_time_data.sh
     class main

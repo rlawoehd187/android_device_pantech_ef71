@@ -196,9 +196,6 @@ ro.device.rear_cam=13MP
 ro.device.front_cam=5MP
 ro.device.screen_res=1080 x 1920
 
-# Time Services
-persist.timed.enable=true
-
 # UI
 sys.use_fifo_ui=1
 
