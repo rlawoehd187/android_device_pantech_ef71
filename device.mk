@@ -156,6 +156,10 @@ PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/configs/camera/pantech_camera_ws10.xml:system/etc/camera/pantech_camera_ws10.xml \
     $(LOCAL_PATH)/configs/camera/s5k5e2_chromatix.xml:system/etc/camera/s5k5e2_chromatix.xml
 
+# CryptfsHW
+PRODUCT_PACKAGES += \
+    vendor.qti.hardware.cryptfshw@1.0-service-qti.qsee
+
 # Display
 PRODUCT_PACKAGES += \
     android.hardware.graphics.allocator@2.0-impl \
