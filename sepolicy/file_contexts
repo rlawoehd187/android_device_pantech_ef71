@@ -1,0 +1,3 @@
+# Block devices
+/dev/block/bootdevice/by-name/persist                               u:object_r:persist_block_device:s0
+/dev/block/bootdevice/by-name/userdata                              u:object_r:userdata_block_device:s0

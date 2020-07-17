@@ -1,0 +1,31 @@
+
+# wifi log device
+#on boot
+#    chown root system /dev/logw/wifi
+#    chmod 0660 /dev/logw/wifi
+
+# wifi_log_monitor
+service logmonitor /system/bin/wifi_log_monitor
+    class main
+    user root
+    group system
+    
+# wifi_event_server
+service eventserver /system/bin/wifi_event_server
+    class main
+    user root
+    group system
+    
+# wcnss_daemon
+service wcnss_daemon /system/bin/wcnss_daemon
+    class main
+    socket wcnss_daemon stream 660 wifi wifi
+    disabled
+    oneshot
+
+# wifi_log_receiver
+#service logreceiver /system/bin/wifi_log_receiver
+#    class main
+#    user root
+#    group root
+    
