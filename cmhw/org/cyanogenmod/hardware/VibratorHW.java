@@ -19,7 +19,7 @@ package org.cyanogenmod.hardware;
 import org.cyanogenmod.internal.util.FileUtils;
 
 public class VibratorHW {
-    private static String CONTROL_PATH = "/sys/devices/virtual/timed_output/vibrator/vtg_level";
+    private static String CONTROL_PATH = "/sys/devices/virtual/timed_output/vibrator/wf_rep";
 
     public static boolean isSupported() {
         return FileUtils.isFileWritable(CONTROL_PATH);
