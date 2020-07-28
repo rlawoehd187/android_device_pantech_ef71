@@ -165,6 +165,11 @@ PRODUCT_COPY_FILES += \
 PRODUCT_PACKAGES += \
     lights.msm8937
 
+# Camera
+PRODUCT_PACKAGES += \
+    camera.msm8937 \
+    libmm-qcamera
+
 # Misc
 PRODUCT_PACKAGES += \
     libcurl
