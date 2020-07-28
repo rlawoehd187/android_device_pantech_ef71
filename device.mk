@@ -134,14 +134,12 @@ PRODUCT_PACKAGES += \
     init.mdm.sh \
     init.qcom.rc \
     init.qcom.sh \
-    init.qcom.syspart_fixup.sh \
     init.qcom.usb.rc \
     init.qcom.wifi.sh \
     loggy.sh	   \
     init.target.rc \
     ueventd.qcom.rc \
     init.qcom.class_core.sh \
-    init.qcom.sensors.sh \
     init.qcom.usb.sh
 
 # IPA Manager
@@ -220,10 +218,11 @@ PRODUCT_COPY_FILES += \
 
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/configs/camera/camera_config.xml:system/etc/camera/camera_config.xml \
-    $(LOCAL_PATH)/configs/camera/ov5670_f5670bq_chromatix.xml:system/etc/camera/ov5670_f5670bq_chromatix.xml \
-    $(LOCAL_PATH)/configs/camera/ov5675_d5v15b_chromatix.xml:system/etc/camera/ov5675_d5v15b_chromatix.xml \
-    $(LOCAL_PATH)/configs/camera/s5k3p3sm_chromatix.xml:system/etc/camera/s5k3p3sm_chromatix.xml \
-    $(LOCAL_PATH)/configs/camera/s5k3p3_chromatix.xml:system/etc/camera/s5k3p3_chromatix.xml
+    $(LOCAL_PATH)/configs/camera/imx214_chromatix.xml:system/etc/camera/imx214_chromatix.xml \
+    $(LOCAL_PATH)/configs/camera/pantech_camera_tp10.xml:system/etc/camera/pantech_camera_tp10.xml \
+    $(LOCAL_PATH)/configs/camera/pantech_camera_tp20.xml:system/etc/camera/pantech_camera_tp20.xml \
+    $(LOCAL_PATH)/configs/camera/pantech_camera_ws10.xml:system/etc/camera/pantech_camera_ws10.xml \
+    $(LOCAL_PATH)/configs/camera/s5k5e2_chromatix.xml:system/etc/camera/s5k5e2_chromatix.xml
 
 # Vulkan
 PRODUCT_COPY_FILES += \

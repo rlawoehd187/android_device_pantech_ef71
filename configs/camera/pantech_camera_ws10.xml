@@ -91,7 +91,7 @@ F_PANTECH_CAMERA / ref msm8937_camera.xml
     <SensorName>imx214</SensorName>
     <ActuatorName>dw9763</ActuatorName>
     <EepromName>dw9763</EepromName>
-    <FlashName>pmic</FlashName>
+    <FlashName>lm3559</FlashName>
     <ChromatixName>imx214_chromatix</ChromatixName>
     <ModesSupported>1</ModesSupported>
     <Position>BACK</Position>
@@ -114,7 +114,6 @@ F_PANTECH_CAMERA / ref msm8937_camera.xml
   <CameraModuleConfig>
     <CameraId>1</CameraId>
     <SensorName>s5k5e2</SensorName>
-    <EepromName>s5k5e2</EepromName>
     <ChromatixName>s5k5e2_chromatix</ChromatixName>
     <ModesSupported>1</ModesSupported>
     <Position>FRONT</Position>

@@ -114,7 +114,6 @@ F_PANTECH_CAMERA / ref msm8937_camera.xml
   <CameraModuleConfig>
     <CameraId>1</CameraId>
     <SensorName>s5k5e2</SensorName>
-    <EepromName>s5k5e2</EepromName>
     <ChromatixName>s5k5e2_chromatix</ChromatixName>
     <ModesSupported>1</ModesSupported>
     <Position>FRONT</Position>
