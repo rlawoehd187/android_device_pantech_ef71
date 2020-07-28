@@ -69,13 +69,13 @@ ro.bluetooth.sap=true
 ro.qualcomm.bt.hci_transport=smd
 
 # Camera
-camera.hal1.packagelist=com.skype.raider,com.google.android.talk
 camera.display.umax=1920x1080
 camera.display.lmax=1280x720
-
-# Core control
-ro.core_ctl_min_cpu=2
-ro.core_ctl_max_cpu=4
+camera.hal1.packagelist=com.skype.raider,com.google.android.talk
+persist.camera.gyro.android=1
+persist.camera.HAL3.enabled=0
+persist.camera.is_type=1
+vidc.enc.narrow.searchrange=1
 
 # CNE
 persist.cne.feature=1
