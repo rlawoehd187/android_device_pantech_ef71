@@ -1,4 +1,4 @@
-/* Copyright (c) 2011-2016, The Linux Foundation. All rights reserved.
+/* Copyright (c) 2011-2015, The Linux Foundation. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
@@ -43,7 +43,6 @@
 #include <fcntl.h>
 #include <errno.h>
 #include <LocDualContext.h>
-#include <platform_lib_includes.h>
 #include <cutils/properties.h>
 
 using namespace loc_core;
@@ -53,15 +52,9 @@ using namespace loc_core;
 //Globals defns
 static gps_location_callback gps_loc_cb = NULL;
 static gps_sv_status_callback gps_sv_cb = NULL;
-static gps_ni_notify_callback gps_ni_cb = NULL;
 
 static void local_loc_cb(UlpLocation* location, void* locExt);
 static void local_sv_cb(GpsSvStatus* sv_status, void* svExt);
-static void local_ni_cb(GpsNiNotification *notification, bool esEnalbed);
-
-GpsNiExtCallbacks sGpsNiExtCallbacks = {
-    local_ni_cb
-};
 
 static const GpsGeofencingInterface* get_geofence_interface(void);
 
@@ -199,18 +192,17 @@ SIDE EFFECTS
    N/A
 
 ===========================================================================*/
-extern "C" const GpsInterface* gps_get_hardware_interface ()
+const GpsInterface* gps_get_hardware_interface ()
 {
     ENTRY_LOG_CALLFLOW();
     const GpsInterface* ret_val;
 
     char propBuf[PROPERTY_VALUE_MAX];
-    memset(propBuf, 0, sizeof(propBuf));
 
     loc_eng_read_config();
 
     // check to see if GPS should be disabled
-    platform_lib_abstraction_property_get("gps.disable", propBuf, "");
+    property_get("gps.disable", propBuf, "");
     if (propBuf[0] == '1')
     {
         LOC_LOGD("gps_get_interface returning NULL because gps.disable=1\n");
@@ -283,7 +275,6 @@ SIDE EFFECTS
 static int loc_init(GpsCallbacks* callbacks)
 {
     int retVal = -1;
-    unsigned int target = (unsigned int) -1;
     ENTRY_LOG();
     LOC_API_ADAPTER_EVENT_MASK_T event;
 
@@ -294,7 +285,6 @@ static int loc_init(GpsCallbacks* callbacks)
     }
 
     event = LOC_API_ADAPTER_BIT_PARSED_POSITION_REPORT |
-            LOC_API_ADAPTER_BIT_GNSS_MEASUREMENT |
             LOC_API_ADAPTER_BIT_SATELLITE_REPORT |
             LOC_API_ADAPTER_BIT_LOCATION_SERVER_REQUEST |
             LOC_API_ADAPTER_BIT_ASSISTANCE_DATA_REQUEST |
@@ -302,17 +292,6 @@ static int loc_init(GpsCallbacks* callbacks)
             LOC_API_ADAPTER_BIT_STATUS_REPORT |
             LOC_API_ADAPTER_BIT_NMEA_1HZ_REPORT |
             LOC_API_ADAPTER_BIT_NI_NOTIFY_VERIFY_REQUEST;
-
-    target = loc_get_target();
-
-    /* If platform is "auto" and external dr enabled then enable
-    ** Measurement report and SV Polynomial report
-    */
-    if((1 == gps_conf.EXTERNAL_DR_ENABLED))
-    {
-        event |= LOC_API_ADAPTER_BIT_GNSS_MEASUREMENT_REPORT |
-                LOC_API_ADAPTER_BIT_GNSS_SV_POLYNOMIAL_REPORT;
-    }
 
     LocCallbacks clientCallbacks = {local_loc_cb, /* location_cb */
                                     callbacks->status_cb, /* status_cb */
@@ -325,8 +304,6 @@ static int loc_init(GpsCallbacks* callbacks)
                                     NULL, /* location_ext_parser */
                                     NULL, /* sv_ext_parser */
                                     callbacks->request_utc_time_cb, /* request_utc_time_cb */
-                                    callbacks->set_system_info_cb, /* set_system_info_cb */
-                                    callbacks->gnss_sv_status_cb, /* gnss_sv_status_cb */
                                     };
 
     gps_loc_cb = callbacks->location_cb;
@@ -335,10 +312,9 @@ static int loc_init(GpsCallbacks* callbacks)
     retVal = loc_eng_init(loc_afw_data, &clientCallbacks, event, NULL);
     loc_afw_data.adapter->mSupportsAgpsRequests = !loc_afw_data.adapter->hasAgpsExtendedCapabilities();
     loc_afw_data.adapter->mSupportsPositionInjection = !loc_afw_data.adapter->hasCPIExtendedCapabilities();
-    loc_afw_data.adapter->mSupportsTimeInjection = !loc_afw_data.adapter->hasCPIExtendedCapabilities()
-                                                   && !loc_afw_data.adapter->hasNativeXtraClient();
+    loc_afw_data.adapter->mSupportsTimeInjection = !loc_afw_data.adapter->hasCPIExtendedCapabilities();
     loc_afw_data.adapter->setGpsLockMsg(0);
-    loc_afw_data.adapter->requestUlp(ContextBase::getCarrierCapabilities());
+    loc_afw_data.adapter->requestUlp(getCarrierCapabilities());
     loc_afw_data.adapter->setXtraUserAgent();
 
     if(retVal) {
@@ -474,12 +450,8 @@ static int  loc_set_position_mode(GpsPositionMode mode,
         break;
     }
 
-    // set position sharing option to true
-    bool sharePosition = true;
-
     LocPosMode params(locMode, recurrence, min_interval,
-                      preferred_accuracy, preferred_time,
-                      sharePosition, NULL, NULL);
+                      preferred_accuracy, preferred_time, NULL, NULL);
     ret_val = loc_eng_set_position_mode(loc_afw_data, params);
 
     EXIT_LOG(%d, ret_val);
@@ -566,10 +538,7 @@ SIDE EFFECTS
 static void loc_delete_aiding_data(GpsAidingData f)
 {
     ENTRY_LOG();
-
-#ifndef TARGET_BUILD_VARIANT_USER
     loc_eng_delete_aiding_data(loc_afw_data, f);
-#endif
 
     EXIT_LOG(%s, VOID_RET);
 }
@@ -596,12 +565,8 @@ const GpsGeofencingInterface* get_geofence_interface(void)
     }
     dlerror();    /* Clear any existing error */
     get_gps_geofence_interface = (get_gps_geofence_interface_function)dlsym(handle, "gps_geofence_get_interface");
-    if ((error = dlerror()) != NULL)  {
+    if ((error = dlerror()) != NULL || NULL == get_gps_geofence_interface)  {
         LOC_LOGE ("%s, dlsym for get_gps_geofence_interface failed, error = %s\n", __func__, error);
-        goto exit;
-    }
-    if (NULL == get_gps_geofence_interface)  {
-        LOC_LOGE ("%s, get_gps_geofence_interface is NULL\n", __func__);
         goto exit;
      }
 
@@ -648,7 +613,7 @@ const void* loc_get_extension(const char* name)
    else if (strcmp(name, AGPS_RIL_INTERFACE) == 0)
    {
        char baseband[PROPERTY_VALUE_MAX];
-       platform_lib_abstraction_property_get("ro.baseband", baseband, "msm");
+       property_get("ro.baseband", baseband, "msm");
        if (strcmp(baseband, "csfb") == 0)
        {
            ret_val = &sLocEngAGpsRilInterface;
@@ -765,7 +730,7 @@ static int  loc_agps_open_with_apniptype(const char* apn, ApnIpType apnIpType)
             bearerType = AGPS_APN_BEARER_IPV4V6;
             break;
         default:
-            bearerType = AGPS_APN_BEARER_IPV4;
+            bearerType = AGPS_APN_BEARER_INVALID;
             break;
     }
 
@@ -995,8 +960,7 @@ SIDE EFFECTS
 void loc_ni_init(GpsNiCallbacks *callbacks)
 {
     ENTRY_LOG();
-    gps_ni_cb = callbacks->notify_cb;
-    loc_eng_ni_init(loc_afw_data, &sGpsNiExtCallbacks);
+    loc_eng_ni_init(loc_afw_data,(GpsNiExtCallbacks*) callbacks);
     EXIT_LOG(%s, VOID_RET);
 }
 
@@ -1109,12 +1073,5 @@ static void local_sv_cb(GpsSvStatus* sv_status, void* svExt)
         gps_sv_cb(sv_status);
     }
     EXIT_LOG(%s, VOID_RET);
-}
-
-static void local_ni_cb(GpsNiNotification *notification, bool esEnalbed)
-{
-    if (NULL != gps_ni_cb) {
-        gps_ni_cb(notification);
-    }
 }
 

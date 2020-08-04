@@ -5,32 +5,22 @@ AM_CFLAGS = -Wundef \
          -fno-inline \
          -fno-short-enums \
          -fpic \
-         -I./ \
-         $(LOCPLA_CFLAGS)
+         -I../platform_lib_abstractions
 
-libgps_utils_so_la_h_sources = \
+libgps_utils_so_la_h_sources = log_util.h \
             msg_q.h \
             linked_list.h \
             loc_cfg.h \
             loc_log.h \
-            loc_target.h \
-            loc_timer.h \
-            MsgTask.h \
-            LocHeap.h \
-            LocThread.h \
-            LocTimer.h \
-            loc_misc_utils.h
+            ../platform_lib_abstractions/platform_lib_includes.h \
+            ../platform_lib_abstractions/platform_lib_time.h \
+            ../platform_lib_abstractions/platform_lib_macros.h
 
 libgps_utils_so_la_c_sources = linked_list.c \
             msg_q.c \
             loc_cfg.cpp \
             loc_log.cpp \
-            loc_target.cpp \
-            LocHeap.cpp \
-            LocTimer.cpp \
-            LocThread.cpp \
-            MsgTask.cpp \
-            loc_misc_utils.cpp
+            ../platform_lib_abstractions/elapsed_millis_since_boot.cpp
 
 library_includedir = $(pkgincludedir)/utils
 
@@ -48,7 +38,7 @@ libgps_utils_so_la_LDFLAGS = -lpthread -shared -version-info 1:0:0
 libgps_utils_so_la_CPPFLAGS = $(AM_CFLAGS) $(AM_CPPFLAGS)
 endif
 
-libgps_utils_so_la_LIBADD = -lstdc++ -llog $(LOCPLA_LIBS)
+libgps_utils_so_la_LIBADD = -lstdc++ -lcutils
 
 #Create and Install libraries
 lib_LTLIBRARIES = libgps_utils_so.la

@@ -1,4 +1,4 @@
-/* Copyright (c) 2011-2014, 2016 The Linux Foundation. All rights reserved.
+/* Copyright (c) 2011-2014, The Linux Foundation. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
@@ -33,7 +33,7 @@
 #include <ctype.h>
 #include <gps_extended.h>
 #include <MsgTask.h>
-#include <platform_lib_log_util.h>
+#include <log_util.h>
 
 namespace loc_core {
 class ContextBase;
@@ -44,7 +44,6 @@ int decodeAddress(char *addr_string, int string_size,
                   const char *data, int data_size);
 
 #define MAX_ADAPTERS          10
-#define MAX_FEATURE_LENGTH    100
 
 #define TO_ALL_ADAPTERS(adapters, call)                                \
     for (int i = 0; i < MAX_ADAPTERS && NULL != (adapters)[i]; i++) {  \
@@ -82,7 +81,6 @@ class LocApiBase {
     ContextBase *mContext;
     LocAdapterBase* mLocAdapters[MAX_ADAPTERS];
     uint64_t mSupportedMsg;
-    uint8_t mFeaturesSupported[MAX_FEATURE_LENGTH];
 
 protected:
     virtual enum loc_api_adapter_err
@@ -118,8 +116,6 @@ public:
     void reportSv(GnssSvStatus &svStatus,
                   GpsLocationExtended &locationExtended,
                   void* svExt);
-    void reportSvMeasurement(GnssSvMeasurementSet &svMeasurementSet);
-    void reportSvPolynomial(GnssSvPolynomial &svPolynomial);
     void reportStatus(GpsStatusValue status);
     void reportNmea(const char* nmea, int length);
     void reportXtraServer(const char* url1, const char* url2,
@@ -134,8 +130,7 @@ public:
     void reportDataCallClosed();
     void requestNiNotify(GpsNiNotification &notify, const void* data);
     void saveSupportedMsgList(uint64_t supportedMsgList);
-    void reportGnssMeasurementData(GnssData &gnssMeasurementData);
-    void saveSupportedFeatureList(uint8_t *featureList);
+    void reportGpsMeasurementData(GpsData &gpsMeasurementData);
 
     // downward calls
     // All below functions are to be defined by adapter specific modules:
@@ -177,8 +172,6 @@ public:
     virtual enum loc_api_adapter_err
         setSUPLVersion(uint32_t version);
     virtual enum loc_api_adapter_err
-        setNMEATypes (uint32_t typesMask);
-    virtual enum loc_api_adapter_err
         setLPPConfig(uint32_t profile);
     virtual enum loc_api_adapter_err
         setSensorControlConfig(int sensorUsage, int sensorProvider);
@@ -205,9 +198,9 @@ public:
                                int gyroBatchesPerSecHigh,
                                int algorithmConfig);
     virtual enum loc_api_adapter_err
-        setAGLONASSProtocol(unsigned long aGlonassProtocol);
+        setExtPowerConfig(int isBatteryCharging);
     virtual enum loc_api_adapter_err
-        setLPPeProtocol(unsigned long lppeCP, unsigned long lppeUP);
+        setAGLONASSProtocol(unsigned long aGlonassProtocol);
     virtual enum loc_api_adapter_err
         getWwanZppFix(GpsLocation & zppLoc);
     virtual enum loc_api_adapter_err
@@ -221,15 +214,9 @@ public:
     virtual void installAGpsCert(const DerEncodedCertificate* pData,
                                  size_t length,
                                  uint32_t slotBitMask);
-    inline virtual void setInSession(bool inSession) {
-
-        (void)inSession;
-    }
+    inline virtual void setInSession(bool inSession) {}
     inline bool isMessageSupported (LocCheckingMessagesID msgID) const {
-
-        // confirm if msgID is not larger than the number of bits in
-        // mSupportedMsg
-        if ((uint64_t)msgID > (sizeof(mSupportedMsg) << 3)) {
+        if (msgID > (sizeof(mSupportedMsg) << 3)) {
             return false;
         } else {
             uint32_t messageChecker = 1 << msgID;
@@ -255,14 +242,14 @@ public:
     virtual enum loc_api_adapter_err setXtraVersionCheck(enum xtra_version_check check);
 
     /*
+      Update gps reporting events
+     */
+    virtual int updateRegistrationMask(LOC_API_ADAPTER_EVENT_MASK_T event,
+                                       loc_registration_mask_status isEnabled);
+    /*
       Check if the modem support the service
      */
     virtual bool gnssConstellationConfig();
-
-    /*
-       Check if a feature is supported
-      */
-    bool isFeatureSupported(uint8_t featureVal);
 };
 
 typedef LocApiBase* (getLocApi_t)(const MsgTask* msgTask,
