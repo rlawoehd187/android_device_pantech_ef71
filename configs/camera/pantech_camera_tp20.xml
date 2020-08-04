@@ -1,5 +1,5 @@
 <!--
-  Copyright (c) 2015 Qualcomm Technologies, Inc.
+  Copyright (c) 2015-2017 Qualcomm Technologies, Inc.
   All Rights Reserved.
   Confidential and Proprietary - Qualcomm Technologies, Inc.
 -->
@@ -82,9 +82,7 @@ LensInfo : Information of the lens present in the module.
 *VARIABLES MARKED WITH ASTRICK (*) ARE MANDATORY.
 
 -->
-<!--
-F_PANTECH_CAMERA / ref msm8937_camera.xml
--->
+
 <CameraConfigurationRoot>
   <CameraModuleConfig>
     <CameraId>0</CameraId>
@@ -111,6 +109,7 @@ F_PANTECH_CAMERA / ref msm8937_camera.xml
       <MinFocusDistance>0.1</MinFocusDistance>
     </LensInfo>
   </CameraModuleConfig>
+
   <CameraModuleConfig>
     <CameraId>1</CameraId>
     <SensorName>s5k5e2</SensorName>
@@ -134,4 +133,5 @@ F_PANTECH_CAMERA / ref msm8937_camera.xml
       <MinFocusDistance>0.1</MinFocusDistance>
     </LensInfo>
   </CameraModuleConfig>
+
 </CameraConfigurationRoot>

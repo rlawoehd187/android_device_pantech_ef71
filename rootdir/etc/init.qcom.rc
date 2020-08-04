@@ -36,12 +36,17 @@ on early-init
     chmod 0755 /sys/kernel/debug
 
 on init
+    export LD_SHIM_LIBS "/system/bin/mm-qcamera-daemon|libshims_camera.so:/system/vendor/lib/lib-imscamera.so|libshim_ims_camera.so"
+
     # Set permissions for persist partition
     mkdir /persist 0771 system system
 
     # Support legacy paths
     symlink /sdcard /mnt/sdcard
     symlink /sdcard /storage/sdcard0
+
+    # NXP HAL expects /dev/pn54x
+    symlink /dev/pn548 /dev/pn54x
 
 on early-boot
     # set RLIMIT_MEMLOCK to 64MB
@@ -110,6 +115,42 @@ on boot
     #Remove SUID bit for iproute2 ip tool
     chmod 0755 /system/bin/ip
 
+# NFC
+    chmod 0666 /dev/pn548
+    chown nfc nfc /dev/pn548
+
+# PANTECH LEDS
+    chown system system /sys/class/leds/red/brightness
+    chown system system /sys/class/leds/red/blink
+    chown system system /sys/class/leds/green/brightness
+    chown system system /sys/class/leds/green/blink
+    chown system system /sys/class/leds/blue/brightness
+    chown system system /sys/class/leds/blue/blink
+    chown system system /sys/class/leds/red/device/grpfreq
+    chown system system /sys/class/leds/red/device/grppwm
+    chown system system /sys/class/leds/red/device/blink
+    chmod 0660 /sys/class/leds/lp5523:channel0/brightness
+    chmod 0660 /sys/class/leds/lp5523:channel1/brightness
+    chmod 0660 /sys/class/leds/lp5523:channel2/brightness
+    chmod 0660 /sys/class/leds/lp5523:channel3/brightness
+    chmod 0660 /sys/class/leds/lp5523:channel4/brightness
+    chmod 0660 /sys/class/leds/lp5523:channel5/brightness
+    chmod 0660 /sys/class/leds/lp5523:channel6/brightness
+    chmod 0660 /sys/class/leds/lp5523:channel7/brightness
+    chmod 0660 /sys/class/leds/lp5523:channel8/brightness
+    chown system radio /sys/class/leds/lp5523:channel0/brightness
+    chown system radio /sys/class/leds/lp5523:channel1/brightness
+    chown system radio /sys/class/leds/lp5523:channel2/brightness
+    chown system radio /sys/class/leds/lp5523:channel3/brightness
+    chown system radio /sys/class/leds/lp5523:channel4/brightness
+    chown system radio /sys/class/leds/lp5523:channel5/brightness
+    chown system radio /sys/class/leds/lp5523:channel6/brightness
+    chown system radio /sys/class/leds/lp5523:channel7/brightness
+    chown system radio /sys/class/leds/lp5523:channel8/brightness
+
+# LED_LP5523
+    chmod 0660 /dev/led_fops
+    chown system radio /dev/led_fops
 
     chmod 0444 /sys/devices/platform/msm_hsusb/gadget/usb_state
 

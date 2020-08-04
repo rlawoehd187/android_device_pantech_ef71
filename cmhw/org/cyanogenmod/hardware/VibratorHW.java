@@ -19,36 +19,27 @@ package org.cyanogenmod.hardware;
 import org.cyanogenmod.internal.util.FileUtils;
 
 public class VibratorHW {
-    private static String LEVEL_PATH = "/sys/class/timed_output/vibrator/vtg_level";
-    private static String MAX_PATH = "/sys/class/timed_output/vibrator/vtg_max";
-    private static String MIN_PATH = "/sys/class/timed_output/vibrator/vtg_min";
+    private static String CONTROL_PATH = "/sys/devices/virtual/timed_output/vibrator/vtg_level";
 
     public static boolean isSupported() {
-        return FileUtils.isFileReadable(LEVEL_PATH) &&
-            FileUtils.isFileWritable(LEVEL_PATH);
+        return FileUtils.isFileWritable(CONTROL_PATH);
     }
-
     public static int getMaxIntensity()  {
-        return Integer.parseInt(FileUtils.readOneLine(MAX_PATH));
+        return 127;
     }
-
     public static int getMinIntensity()  {
-        return Integer.parseInt(FileUtils.readOneLine(MIN_PATH));
+        return 1;
     }
-
     public static int getWarningThreshold()  {
-        return -1;
+        return 90;
     }
-
     public static int getCurIntensity()  {
-        return Integer.parseInt(FileUtils.readOneLine(LEVEL_PATH));
+        return Integer.parseInt(FileUtils.readOneLine(NFORCE_PATH));
     }
-
     public static int getDefaultIntensity()  {
-        return getMaxIntensity();
+        return 127;
     }
-
     public static boolean setIntensity(int intensity)  {
-        return FileUtils.writeLine(LEVEL_PATH, String.valueOf(intensity));
+        return FileUtils.writeLine(CONTROL_PATH, String.valueOf(intensity));
     }
 }
