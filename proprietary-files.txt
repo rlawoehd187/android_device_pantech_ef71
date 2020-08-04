@@ -345,7 +345,6 @@ lib/libloc_eng.so
 lib/libloc_core.so
 lib/libloc_pla.so
 lib/libloc_stub.so
-lib/libgnsspps.so
 lib/libgps.utils.so
 -priv-app/com.qualcomm.location/com.qualcomm.location.apk
 vendor/bin/slim_daemon
