@@ -120,9 +120,6 @@ PRODUCT_PACKAGES += \
     libcurl \
     libgnsspps
 
-PRODUCT_BOOT_JARS += \
-    com.qti.location.sdk
-
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/gps/etc/flp.conf:system/etc/flp.conf \
     $(LOCAL_PATH)/gps/etc/gps.conf:system/etc/gps.conf \
