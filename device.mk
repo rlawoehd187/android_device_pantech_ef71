@@ -117,7 +117,6 @@ PRODUCT_COPY_FILES += \
 # GPS
 PRODUCT_PACKAGES += \
     gps.msm8937 \
-    libcurl \
     libgnsspps
 
 PRODUCT_COPY_FILES += \

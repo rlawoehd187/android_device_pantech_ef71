@@ -781,16 +781,9 @@ void LocEngReportPosition::proc() const {
     if (locEng->mute_session_state != LOC_MUTE_SESS_IN_SESSION) {
         bool reported = false;
         if (locEng->location_cb != NULL) {
-	        LOC_LOGE("JoePark, LocEngReportPosition, accuracy =%f\n", mLocation.gpsLocation.accuracy);
-	        LOC_LOGE("JoePark, mStatus %d\n", mStatus);
             if (LOC_SESS_FAILURE == mStatus) {
                 // in case we want to handle the failure case
-#if 0 //def FEATURE_SKY_CP_GNSS_FIX_FAIL
-		locEng->location_cb((UlpLocation*)&(mLocation),
-                	                (void*)mLocationExt);
-#else
                 locEng->location_cb(NULL, NULL);
-#endif/*FEATURE_SKY_CP_GNSS_FIX_FAIL*/
                 reported = true;
             }
             // what's in the else if is... (line by line)
