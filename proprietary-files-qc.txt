@@ -661,6 +661,10 @@ vendor/lib64/vendor.qti.hardware.tui_comm@1.0.so
 # USB
 etc/firmware/ice40.bin
 
+# VNDK
+vendor/lib/vndk-sp/libcutils.so|846d5769b71abca5b8fa185d4cf83a5cf1afed3c
+vendor/lib/vndk/libprocessgroup.so|62743ee7f648f0f742c35c9fbd7299186e91967a
+
 # Wi-Fi
 vendor/bin/wcnss_service
 
