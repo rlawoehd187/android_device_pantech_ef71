@@ -5,6 +5,7 @@
      Qualcomm Technologies Proprietary and Confidential.
 -->
 
+
 <!-- QMI configuration -->
 <list name="netmgr_config">
   <!-- Logging overrides for ds_exec() family of commands -->
@@ -1161,7 +1162,7 @@
       <data name="dataformat_agg_ul_size" type="int"> 0 </data>
       <data name="dataformat_dl_data_aggregation_protocol" type="int"> 7 </data>
       <data name="dataformat_ul_data_aggregation_protocol" type="int"> 7 </data>
-      <data name="dataformat_dl_gro_enabled" type="int"> 1 </data>
+      <data name="dataformat_dl_gro_enabled" type="int"> 0 </data>
       <data name="dataformat_ul_gso_enabled" type="int"> 1 </data>
       <data name="phys_net_dev" type="string"> rmnet_ipa0 </data>
 
