@@ -90,10 +90,6 @@ persist.hwc.mdpcomp.enable=true
 persist.demo.hdmirotationlock=false
 ro.sf.lcd_density=480
 
-# DPM
-persist.dpm.feature=7
-persist.sys.dpmd.nsrm=3
-
 # Enable Delay Service Restart
 ro.am.reschedule_service=true
 
