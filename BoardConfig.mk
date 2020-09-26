@@ -159,6 +159,7 @@ MALLOC_SVELTE := true
 
 # HIDL
 DEVICE_MANIFEST_FILE := $(DEVICE_PATH)/manifest.xml
+DEVICE_MATRIX_FILE   := $(DEVICE_PATH)/compatibility_matrix.xml
 TARGET_FS_CONFIG_GEN += $(DEVICE_PATH)/config.fs
 
 # Media
