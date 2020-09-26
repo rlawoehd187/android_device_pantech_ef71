@@ -776,7 +776,7 @@ service qti /vendor/bin/qti
     user radio
     group radio net_raw oem_2901 usb net_admin
 
-service sensors /system/bin/sensors.qcom
+service sensors /vendor/bin/sensors.qcom
     class core
     user root
     group root
