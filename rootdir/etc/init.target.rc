@@ -35,84 +35,17 @@ on early-init
     symlink /data/tombstones /tombstones
     mkdir /dsp 0771 media media
 
-on post-fs
-    export LD_PRELOAD libNimsWrap.so
-
 on fs
     wait /dev/block/platform/soc/${ro.boot.bootdevice}
     symlink /dev/block/platform/soc/${ro.boot.bootdevice} /dev/block/bootdevice
-    # jwheo 20120913 Remove system partition from fstab.qcom file and mount system here
-    wait /dev/block/bootdevice/by-name/system
-    mount ext4 /dev/block/bootdevice/by-name/system /system ro barrier=1,discard
-    
-    # jwheo 20120913 check userdata partition by mmcblk_utils but mout userdata partition in fstab.qcom
-    wait /dev/block/bootdevice/by-name/userdata
-    exec /system/bin/mmcblk_utils ext4 /dev/block/bootdevice/by-name/userdata
-    #FEATURE_PANTECH_MMCBLKUTILS_UNMOUNT 
-    umount /system
-
     mount_all fstab.qcom
     swapon_all fstab.qcom
     write /proc/sys/vm/page-cluster 0
     write /proc/sys/vm/swappiness 100
 
-    # Keeping following partitions outside fstab file. As user may not have
-    # these partition flashed on the device. Failure to mount any partition in fstab file
-    # results in failure to launch late-start class.
+on post-fs
+    export LD_PRELOAD libNimsWrap.so
 
-    wait /dev/block/bootdevice/by-name/cache
-    exec /system/bin/mmcblk_utils ext4 /dev/block/bootdevice/by-name/cache
-    exec /system/bin/e2fsck -p /dev/block/bootdevice/by-name/cache
-    mount ext4 /dev/block/bootdevice/by-name/cache /cache nosuid nodev barrier=1
-
-    wait /dev/block/bootdevice/by-name/persist
-    exec /system/bin/mmcblk_utils ext4 /dev/block/bootdevice/by-name/persist
-    exec /system/bin/e2fsck -p /dev/block/bootdevice/by-name/persist
-    mount ext4 /dev/block/bootdevice/by-name/persist /persist nosuid nodev barrier=1
-
-    #mkdir /persist/data 0700 system system
-    restorecon_recursive /persist
-
-    # lsi@bs1 : FEATURE_PANTECH_DXHDCP_PROVISIONING, secure partition, link /persist/data to /secure/data
-    mkdir /secure 0700 system system
-    wait /dev/block/bootdevice/by-name/secure
-    exec /system/bin/mmcblk_utils ext4 /dev/block/bootdevice/by-name/secure
-    exec /system/bin/e2fsck -p /dev/block/bootdevice/by-name/secure
-    mount ext4 /dev/block/bootdevice/by-name/secure /secure nosuid nodev barrier=1
-    mkdir /secure/data 0700 system system
-    symlink /secure/data /persist/data
-    #chown system system /secure
-    restorecon_recursive /secure
-
-    wait /dev/block/bootdevice/by-name/dsp
-    mount ext4 /dev/block/bootdevice/by-name/dsp /dsp ro nosuid nodev barrier=1
-    restorecon_recursive /dsp
-
-    wait /dev/block/bootdevice/by-name/modem
-    mount vfat /dev/block/bootdevice/by-name/modem /firmware ro context=u:object_r:firmware_file:s0,shortname=lower,uid=1000,gid=1000,dmask=227,fmask=337
-    #write /sys/kernel/boot_adsp/boot 1
-
-    wait /dev/block/bootdevice/by-name/oem
-    mount ext4 /dev/block/bootdevice/by-name/oem /oem ro nosuid nodev barrier=1
-
-    # jwheo 20120913 check log partition by mmcblk_utils
-    wait /dev/block/bootdevice/by-name/log
-    exec /system/bin/mmcblk_utils fat16 /dev/block/bootdevice/by-name/log
-    
-    # add fota partition
-    mkdir /fota 0771 root root
-    wait /dev/block/bootdevice/by-name/fotadata
-    exec /system/bin/mmcblk_utils ext4 /dev/block/bootdevice/by-name/fotadata
-    exec /system/bin/e2fsck -p /dev/block/bootdevice/by-name/fotadata
-    mount ext4 /dev/block/bootdevice/by-name/fotadata /fota nosuid nodev barrier=1
-    chmod 0771 /fota
-    restorecon_recursive /fota
-    mkdir /fota/recovery 0777 system system
-
-#FEATURE_PANTECH_SDXC_EXFAT
-    chmod 0755 /system/lib/modules/texfat.ko
-    insmod /system/lib/modules/texfat.ko  
-    
 on post-fs-data
     mkdir /data/tombstones 0771 system system
     mkdir /tombstones/modem 0771 system system
