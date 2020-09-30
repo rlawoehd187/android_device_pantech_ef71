@@ -71,14 +71,10 @@ ro.qualcomm.bt.hci_transport=smd
 
 # Camera
 camera.hal1.packagelist=com.skype.raider,com.google.android.talk
-media.camera.ts.monotonic=0
-persist.camera.gyro.android=1
+camera.display.umax=1920x1080
+camera.display.lmax=1280x720
 persist.camera.is_type=1
-vidc.debug.perf.mode=2
-vidc.enc.dcvs.extra-buff-count=2
-vidc.enc.disable.pq=true
-media.stagefright.legacyencoder=true
-media.stagefright.less-secure=true
+persist.camera.gyro.android=1
 
 # CNE
 persist.cne.feature=1
@@ -123,9 +119,12 @@ qcom.hw.aac.encoder=true
 video.disable.ubwc=1
 vidc.disable.split.mode=1
 vidc.enc.narrow.searchrange=1
-vidc.debug.perf.mode=2
-vidc.enc.dcvs.extra-buff-count=2
-vidc.enc.disable.pq=true
+
+persist.camera.HAL3.enabled=0
+persist.sys.camera-sound=1
+vidc.enc.narrow.searchrange=1
+media.stagefright.legacyencoder=true
+media.stagefright.less-secure=true
 
 # Netmgrd
 ro.use_data_netmgrd=true

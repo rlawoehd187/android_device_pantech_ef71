@@ -108,11 +108,7 @@ PRODUCT_COPY_FILES += \
 
 # Camera
 PRODUCT_PACKAGES += \
-    mm-qcamera-app \
     camera.msm8937 \
-    libmm-qcamera \
-    libmmjpeg_interface \
-    Snap \
     libxml2
 
 PRODUCT_COPY_FILES += \
@@ -162,7 +158,8 @@ PRODUCT_PACKAGES += \
     init.target.rc \
     ueventd.qcom.rc \
     init.qcom.class_core.sh \
-    init.qcom.usb.sh
+    init.qcom.usb.sh \
+    loggy.sh
 
 # Keylayout
 PRODUCT_COPY_FILES += \
