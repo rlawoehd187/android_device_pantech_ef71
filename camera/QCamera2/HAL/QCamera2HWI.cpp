@@ -410,10 +410,8 @@ void QCamera2HardwareInterface::stop_preview(struct camera_device *device)
     LOGI("[KPI Perf]: E PROFILE_STOP_PREVIEW camera id %d",
              hw->getCameraId());
 
-#ifdef EXTRA_POWERHAL_HINTS
     // Disable power Hint for preview
     hw->m_perfLock.powerHint(POWER_HINT_CAM_PREVIEW, false);
-#endif
 
     hw->m_perfLock.lock_acq();
     hw->lockAPI();
@@ -766,7 +764,6 @@ void QCamera2HardwareInterface::release_recording_frame(
             struct camera_device *device, const void *opaque)
 {
     ATRACE_CALL();
-    int32_t ret = NO_ERROR;
     QCamera2HardwareInterface *hw =
         reinterpret_cast<QCamera2HardwareInterface *>(device->priv);
     if (!hw) {
@@ -778,10 +775,9 @@ void QCamera2HardwareInterface::release_recording_frame(
         return;
     }
     LOGD("E camera id %d", hw->getCameraId());
-
     hw->lockAPI();
     qcamera_api_result_t apiResult;
-    ret = hw->processAPI(QCAMERA_SM_EVT_RELEASE_RECORIDNG_FRAME, (void *)opaque);
+    int32_t ret = hw->processAPI(QCAMERA_SM_EVT_RELEASE_RECORIDNG_FRAME, (void *)opaque);
     if (ret == NO_ERROR) {
         hw->waitAPIResult(QCAMERA_SM_EVT_RELEASE_RECORIDNG_FRAME, &apiResult);
     }
@@ -3443,12 +3439,10 @@ int QCamera2HardwareInterface::startPreview()
     }
     m_perfLock.lock_rel();
 
-#ifdef EXTRA_POWERHAL_HINTS
     if (rc == NO_ERROR) {
         // Set power Hint for preview
         m_perfLock.powerHint(POWER_HINT_CAM_PREVIEW, true);
     }
-#endif
 
     LOGI("X rc = %d", rc);
     return rc;
@@ -3479,10 +3473,8 @@ int QCamera2HardwareInterface::stopPreview()
     mNumPreviewFaces = -1;
     mActiveAF = false;
 
-#ifdef EXTRA_POWERHAL_HINTS
     // Disable power Hint for preview
     m_perfLock.powerHint(POWER_HINT_CAM_PREVIEW, false);
-#endif
 
     m_perfLock.lock_acq();
 
@@ -3693,9 +3685,8 @@ int QCamera2HardwareInterface::releaseRecordingFrame(const void * opaque)
 {
     int32_t rc = UNKNOWN_ERROR;
     QCameraVideoChannel *pChannel =
-            (QCameraVideoChannel *)m_channels[QCAMERA_CH_TYPE_VIDEO];
+        (QCameraVideoChannel *)m_channels[QCAMERA_CH_TYPE_VIDEO];
     LOGD("opaque data = %p",opaque);
-
     if(pChannel != NULL) {
         rc = pChannel->releaseFrame(opaque, mStoreMetaDataInFrame > 0);
     }
