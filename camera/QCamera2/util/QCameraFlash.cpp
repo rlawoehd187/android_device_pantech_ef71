@@ -41,7 +41,6 @@ extern "C" {
 }
 
 #define STRING_LENGTH_OF_64_BIT_NUMBER 21
-
 volatile uint32_t gCamHal3LogLevel = 1;
 
 namespace qcamera {
@@ -176,9 +175,54 @@ int32_t QCameraFlash::initFlash(const int camera_id)
         } else {
             struct msm_flash_cfg_data_t cfg;
             struct msm_flash_init_info_t init_info;
+#ifdef F_PANTECH_CAMERA_FLASH_LM3559
+            struct msm_sensor_power_setting_array *power_setting_array;
+            struct msm_camera_i2c_reg_setting_array *lm3559_setting_on;            
+            unsigned short flash_power_setting[] = {SENSOR_GPIO_IOVDD_EN, 
+                                                    SENSOR_GPIO_FL_EN, 
+                                                    SENSOR_GPIO_FL_NOW};
+            unsigned short flash_init_setting[] = {0x10, 0x18};
+#endif
             memset(&cfg, 0, sizeof(struct msm_flash_cfg_data_t));
             memset(&init_info, 0, sizeof(struct msm_flash_init_info_t));
+#ifdef F_PANTECH_CAMERA_FLASH_LM3559
+            init_info.flash_driver_type = FLASH_DRIVER_I2C;
+            init_info.slave_addr = 0xa6;
+            init_info.i2c_freq_mode = I2C_STANDARD_MODE;
+            power_setting_array = (struct msm_sensor_power_setting_array *)malloc(sizeof(*power_setting_array));
+            lm3559_setting_on = (struct msm_camera_i2c_reg_setting_array *)malloc(sizeof(*lm3559_setting_on));
+            if(!power_setting_array || !lm3559_setting_on)
+            {
+              ALOGE("flash power_setting mem NULL!!");
+              return -EINVAL;
+            }
+            power_setting_array->size = (sizeof(flash_power_setting) / sizeof((flash_power_setting)[0]));
+            power_setting_array->size_down = (sizeof(flash_power_setting) / sizeof((flash_power_setting)[0]));
+            for(int i = 0; i<power_setting_array->size; i++)
+            {
+              power_setting_array->power_setting_a[i].seq_type = SENSOR_GPIO;
+              power_setting_array->power_setting_a[i].seq_val = flash_power_setting[i];
+              power_setting_array->power_setting_a[i].config_val = 2; /*GPIO_OUT_HIGH*/
+              power_setting_array->power_setting_a[i].delay = 1;
+              power_setting_array->power_down_setting_a[i].seq_type = SENSOR_GPIO;
+              power_setting_array->power_down_setting_a[i].seq_val = flash_power_setting[i];
+              power_setting_array->power_down_setting_a[i].config_val = 0; /*GPIO_OUT_LOW*/
+              power_setting_array->power_down_setting_a[i].delay = 0;
+            }
+
+            lm3559_setting_on->addr_type = MSM_CAMERA_I2C_BYTE_ADDR;
+            lm3559_setting_on->data_type = MSM_CAMERA_I2C_BYTE_DATA;
+            lm3559_setting_on->delay = 0;
+            lm3559_setting_on->size = 1;
+            lm3559_setting_on->reg_setting_a[0].reg_addr = flash_init_setting[0];
+            lm3559_setting_on->reg_setting_a[0].reg_data = flash_init_setting[1];
+            lm3559_setting_on->reg_setting_a[0].delay = 0;
+            init_info.power_setting_array = power_setting_array;
+            init_info.settings = lm3559_setting_on;            
+#else
             init_info.flash_driver_type = FLASH_DRIVER_DEFAULT;
+#endif
+            ALOGE("flashLight init %d type %d",__LINE__,init_info.flash_driver_type);
             cfg.cfg.flash_init_info = &init_info;
             cfg.cfg_type = CFG_FLASH_INIT;
             retVal = ioctl(m_flashFds[camera_id],
@@ -233,10 +277,43 @@ int32_t QCameraFlash::setFlashMode(const int camera_id, const bool mode)
         LOGE("called for uninited flash: %d", camera_id);
         retVal = -EINVAL;
     }  else {
+#ifdef F_PANTECH_CAMERA_FLASH_LM3559
+        struct msm_camera_i2c_reg_setting_array *flash_low_settings;
+        struct msm_camera_i2c_reg_setting_array *flash_off_settings;
+        unsigned short flash_low_setting[2][2] = {{0x10, 0x1A},{0xA0, 0x1B}};
+        unsigned short flash_off_setting[] = {0x10, 0x00};
+        flash_low_settings = (struct msm_camera_i2c_reg_setting_array *)malloc(sizeof(*flash_low_settings));
+        flash_off_settings = (struct msm_camera_i2c_reg_setting_array *)malloc(sizeof(*flash_off_settings));   
+        if(!flash_low_settings || !flash_off_settings)
+        {
+          ALOGE("flash_settings mem NULL!!");
+          return -EINVAL;
+        }
+
+        flash_low_settings->addr_type = flash_off_settings->addr_type = MSM_CAMERA_I2C_BYTE_ADDR;
+        flash_low_settings->data_type = flash_off_settings->data_type = MSM_CAMERA_I2C_BYTE_DATA;
+        flash_low_settings->delay = flash_off_settings->delay = 0;
+        flash_low_settings->size = (sizeof(flash_low_setting) / sizeof((flash_low_setting)[0]));
+        for(int i=0;i<flash_low_settings->size;i++)
+        {
+          flash_low_settings->reg_setting_a[i].reg_addr = flash_low_setting[i][0];
+          flash_low_settings->reg_setting_a[i].reg_data = flash_low_setting[i][1];
+          flash_low_settings->reg_setting_a[i].delay = 0;
+        }        
+        
+        flash_off_settings->size = 1;
+        flash_off_settings->reg_setting_a[0].reg_addr = flash_off_setting[0];
+        flash_off_settings->reg_setting_a[0].reg_data = flash_off_setting[1];
+        flash_off_settings->reg_setting_a[0].delay = 0;
+#endif
         memset(&cfg, 0, sizeof(struct msm_flash_cfg_data_t));
         for (int i = 0; i < MAX_LED_TRIGGERS; i++)
             cfg.flash_current[i] = QCAMERA_TORCH_CURRENT_VALUE;
         cfg.cfg_type = mode ? CFG_FLASH_LOW: CFG_FLASH_OFF;
+#ifdef F_PANTECH_CAMERA_FLASH_LM3559
+        cfg.cfg.settings = mode ? flash_low_settings : flash_off_settings;
+#endif
+        ALOGE("set FlashLight Mode %d  type %d", mode, cfg.cfg_type);
 
         retVal = ioctl(m_flashFds[camera_id],
                         VIDIOC_MSM_FLASH_CFG,
