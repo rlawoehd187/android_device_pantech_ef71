@@ -1699,9 +1699,6 @@ typedef enum {
     CAM_INTF_META_FACE_DETECTION,
     /* Whether optical image stabilization is enabled. */
     CAM_INTF_META_LENS_OPT_STAB_MODE,
-#ifdef F_PANTECH_CAMERA_CUST_VT_TUNING
-    CAM_INTF_PARM_IS_VT,
-#endif
     /* specific to HAl1 */
     CAM_INTF_META_AUTOFOCUS_DATA,
     CAM_INTF_PARM_QUERY_FLASH4SNAP, /* 20 */
@@ -1777,7 +1774,6 @@ typedef enum {
     CAM_INTF_PARM_TONE_MAP_MODE, /* 90 */
     CAM_INTF_PARM_CAPTURE_FRAME_CONFIG,
     CAM_INTF_PARM_DUAL_LED_CALIBRATION,
-    CAM_INTF_PARM_ADV_CAPTURE_MODE,
 
     /* stream based parameters */
     CAM_INTF_PARM_DO_REPROCESS,

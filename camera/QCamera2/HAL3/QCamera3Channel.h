@@ -89,10 +89,6 @@ public:
     int32_t bufDone(mm_camera_super_buf_t *recvd_frame);
     int32_t setBundleInfo(const cam_bundle_config_t &bundleInfo);
 
-#ifdef F_PANTECH_CAMERA_OEM_FLIP_MODE
-    int setFlipMode(int flip_mode);
-#endif
-
     virtual uint32_t getStreamTypeMask();
     uint32_t getStreamID(uint32_t streamMask);
     void destroy();

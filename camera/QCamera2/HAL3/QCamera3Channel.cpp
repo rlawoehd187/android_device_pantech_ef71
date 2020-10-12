@@ -380,47 +380,6 @@ int32_t QCamera3Channel::setBundleInfo(const cam_bundle_config_t &bundleInfo)
     return rc;
 }
 
-#ifdef F_PANTECH_CAMERA_OEM_FLIP_MODE
-/*===========================================================================
- * FUNCTION   : setFlipMode
- *
- * DESCRIPTION: set the value that makes the image to change left side and right side when user uses the front camera.
- *
- * PARAMETERS : flip_mode
- *
- * RETURN     : rc
- *==========================================================================*/
-int QCamera3Channel::setFlipMode(int flip_mode)
-{
-    int rc = NO_ERROR;
-
-    //if(flip_mode > 0){
-    for (uint32_t i = 0; i < m_numStreams; i++) {
-        if (mStreams[i] != NULL &&
-			(mStreams[i]->getMyType() == CAM_STREAM_TYPE_SNAPSHOT ||
-                     mStreams[i]->isOrignalTypeOf(CAM_STREAM_TYPE_SNAPSHOT) ||
-                     mStreams[i]->getMyType() == CAM_STREAM_TYPE_POSTVIEW ||
-                     mStreams[i]->isOrignalTypeOf(CAM_STREAM_TYPE_POSTVIEW) ||
-                     mStreams[i]->getMyType() == CAM_STREAM_TYPE_CALLBACK ||
-                     mStreams[i]->isOrignalTypeOf(CAM_STREAM_TYPE_CALLBACK))
-        ) {
-            cam_stream_parm_buffer_t param;
-            memset(&param, 0, sizeof(cam_stream_parm_buffer_t));
-            param.type = CAM_STREAM_PARAM_TYPE_SET_FLIP;
-            param.flipInfo.flip_mask = (uint32_t)flip_mode;
-            rc = mStreams[i]->setParameter(param);
-			
-            if (rc != NO_ERROR) {
-                ALOGE("%s: set snapshot stream flip failed", __func__);
-            }
-        }
-    }
-    
-	
-    return rc;
-}
-#endif
-
 /*===========================================================================
  * FUNCTION   : getStreamTypeMask
  *
@@ -4005,15 +3964,10 @@ int32_t QCamera3ReprocessChannel::stop()
     int32_t rc = NO_ERROR;
 
     rc = QCamera3Channel::stop();
-#ifdef F_PANTECH_CAMERA_QCOM_PATCH_CAM_STOP_CANCELLING_BURSTSHOT
-    rc |= m_camOps->stop_channel(m_camHandle, m_handle);
-
-    unmapOfflineBuffers(true);
-#else
     unmapOfflineBuffers(true);
 
     rc |= m_camOps->stop_channel(m_camHandle, m_handle);
-#endif
+
     return rc;
 }
 

@@ -1649,6 +1649,7 @@ int QCameraVideoMemory::closeNativeHandle(const void *data, bool metadata)
     int32_t rc = NO_ERROR;
 
 #ifdef USE_MEDIA_EXTENSIONS
+    if (metadata) {
         const media_metadata_buffer *packet =
                     (const media_metadata_buffer *)data;
         if ((packet != NULL) && (packet->eType ==

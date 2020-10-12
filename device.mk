@@ -108,8 +108,7 @@ PRODUCT_COPY_FILES += \
 
 # Camera
 PRODUCT_PACKAGES += \
-    camera.msm8937 \
-    snap
+    camera.msm8937
 
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/configs/camera/imx214_chromatix.xml:system/etc/camera/imx214_chromatix.xml \

@@ -1035,38 +1035,6 @@ cam_stream_type_t QCamera3Stream::getMyType() const
     }
 }
 
-#ifdef F_PANTECH_CAMERA_OEM_FLIP_MODE
-/*===========================================================================
- * FUNCTION   : isOrignalTypeOf
- *
- * DESCRIPTION: helper function to determine if the original stream is of the
- *              queried type if it's reproc stream
- *              F_PANTECH_CAMERA_OEM_FLIP_MODE
- *
- * PARAMETERS :
- *   @type    : stream type as of queried
- *
- * RETURN     : true/false
- *==========================================================================*/
-bool QCamera3Stream::isOrignalTypeOf(cam_stream_type_t type)
-{
-    if (mStreamInfo != NULL &&
-        mStreamInfo->stream_type == CAM_STREAM_TYPE_OFFLINE_PROC &&
-        mStreamInfo->reprocess_config.pp_type == CAM_ONLINE_REPROCESS_TYPE &&
-        mStreamInfo->reprocess_config.online.input_stream_type == type) {
-        return true;
-    } else if (
-        mStreamInfo != NULL &&
-        mStreamInfo->stream_type == CAM_STREAM_TYPE_OFFLINE_PROC &&
-        mStreamInfo->reprocess_config.pp_type == CAM_OFFLINE_REPROCESS_TYPE &&
-        mStreamInfo->reprocess_config.offline.input_type == type) {
-        return true;
-    } else {
-        return false;
-    }
-}
-#endif
-
 /*===========================================================================
  * FUNCTION   : mapBuf
  *

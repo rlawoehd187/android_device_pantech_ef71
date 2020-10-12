@@ -83,10 +83,6 @@ public:
     static void *dataProcRoutine(void *data);
     uint32_t getMyHandle() const {return mHandle;}
     cam_stream_type_t getMyType() const;
-#ifdef F_PANTECH_CAMERA_OEM_FLIP_MODE
-    bool isOrignalTypeOf(cam_stream_type_t type);
-#endif
-    
     int32_t getFrameOffset(cam_frame_len_offset_t &offset);
     int32_t getFrameDimension(cam_dimension_t &dim);
     int32_t getFormat(cam_format_t &fmt);
