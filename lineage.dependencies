@@ -1,18 +1,6 @@
 [
   {
-    "remote": "github",
-    "repository": "LineageOS/android_vendor_nxp-nfc_opensource_frameworks",
-    "revision": "cm-14.1",
-    "target_path": "vendor/nxp-nfc/opensource/frameworks"
-  },
-  {
-    "repository": "LineageOS/android_vendor_nxp-nfc_opensource_libnfc-nci",
-    "revision": "cm-14.1",
-    "target_path": "vendor/nxp-nfc/opensource/libnfc-nci"
-  },
-  {
-    "repository": "LineageOS/android_vendor_nxp-nfc_opensource_Nfc",
-    "revision": "cm-14.1",
-    "target_path": "vendor/nxp-nfc/opensource/Nfc"
+    "repository": "android_hardware_sony_timekeep",
+    "target_path": "hardware/sony/timekeep"
   }
 ]
