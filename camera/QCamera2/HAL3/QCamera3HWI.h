@@ -297,11 +297,7 @@ private:
 
     static bool supportBurstCapture(uint32_t cameraId);
     int32_t setBundleInfo();
-	
-#ifdef F_PANTECH_CAMERA_OEM_FLIP_MODE
-    int setFlipMode(int flip_mode);
-#endif
-    
+
     camera3_device_t   mCameraDevice;
     uint32_t           mCameraId;
     mm_camera_vtbl_t  *mCameraHandle;
@@ -460,10 +456,6 @@ private:
     uint32_t mLdafCalib[2];
     bool mPowerHintEnabled;
     int32_t mLastCustIntentFrmNum;
-
-#ifdef F_PANTECH_CAMERA_PREPARM_CHECK_SKIP
-    uint8_t mPre_sceneMode;
-#endif
 
     static const QCameraMap<camera_metadata_enum_android_control_effect_mode_t,
             cam_effect_mode_type> EFFECT_MODES_MAP[];

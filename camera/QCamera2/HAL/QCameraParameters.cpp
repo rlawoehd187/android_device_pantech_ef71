@@ -5138,13 +5138,6 @@ int32_t QCameraParameters::updateParameters(const String8& p,
 #ifdef TARGET_TS_MAKEUP
     if ((rc = setTsMakeup(params)))                     final_rc = rc;
 #endif
-
-#ifdef F_PANTECH_CAMERA_CUST_VT_TUNING
-    if ((rc = setVT(params)))                          final_rc = rc;
-#endif
-
-
-    if ((rc = setAdvancedCaptureMode()))                final_rc = rc;
 UPDATE_PARAM_DONE:
     needRestart = m_bNeedRestart;
     return final_rc;
@@ -14015,60 +14008,5 @@ int32_t QCameraParameters::setDualLedCalibration(
     }
     return NO_ERROR;
 }
-
-/*===========================================================================
- * FUNCTION   : setAdvancedCaptureMode
- *
- * DESCRIPTION: set advanced capture mode
- *
- * PARAMETERS : none
- *
- * RETURN     : int32_t type of status
- *              NO_ERROR  -- success
- *              none-zero failure code
- *==========================================================================*/
-int32_t QCameraParameters::setAdvancedCaptureMode()
-{
-    uint8_t value = isAdvCamFeaturesEnabled();
-    LOGD("updating advanced capture mode value to %d",value);
-    if (ADD_SET_PARAM_ENTRY_TO_BATCH(m_pParamBuf,
-            CAM_INTF_PARM_ADV_CAPTURE_MODE, value)) {
-        LOGE("Failed to set advanced capture mode param");
-        return BAD_VALUE;
-    }
-    return NO_ERROR;
-}
-
-#ifdef F_PANTECH_CAMERA_CUST_VT_TUNING
-int32_t QCameraParameters::setVT(const QCameraParameters& params)
-{
-    const char * str = params.get("pantech-vt");
-    const char *prev_str = get("pantech-vt");	
-
-    if (str != NULL) {
-        if (prev_str == NULL || strcmp(str, prev_str) != 0) {
-            m_bNeedRestart = true;
-            int32_t value = lookupAttr(TRUE_FALSE_MODES_MAP,
-                                       PARAM_MAP_SIZE(TRUE_FALSE_MODES_MAP),
-                                       str);
-            if(value != NAME_NOT_FOUND){
-                updateParamEntry("pantech-vt", str);
-
-                ALOGE("VT : setVT() = %d" , value);	
-
-                ADD_SET_PARAM_ENTRY_TO_BATCH(m_pParamBuf,
-                                  CAM_INTF_PARM_IS_VT,                                  
-                                  value);
-    
-                return NO_ERROR;
-            } else {
-                ALOGE("Invalid setVT value: %s", str);
-                return BAD_VALUE;
-            }
-        }
-    }
-    return NO_ERROR;
-}
-#endif
 
 }; // namespace qcamera

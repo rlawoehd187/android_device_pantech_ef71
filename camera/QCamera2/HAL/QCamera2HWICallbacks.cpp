@@ -170,25 +170,6 @@ void QCamera2HardwareInterface::zsl_channel_cb(mm_camera_super_buf_t *recvd_fram
         }
     }
 
-#ifdef F_PANTECH_CAMERA// HC_160321
-    // DUMP YUV before reprocess if needed
-    property_get("persist.camera.zsl_yuv", value, "0");
-    dump_yuv = atoi(value) > 0 ? true : false;	
-    if (dump_yuv) {
-        for (uint32_t i = 0; i < recvd_frame->num_bufs; i++) {
-            if (recvd_frame->bufs[i]->stream_type == CAM_STREAM_TYPE_SNAPSHOT) {
-                mm_camera_buf_def_t * yuv_frame = recvd_frame->bufs[i];
-                QCameraStream *pStream = pChannel->getStreamByHandle(yuv_frame->stream_id);
-                if (NULL != pStream) {
-                    pme->dumpFrameToFile(pStream, yuv_frame, QCAMERA_DUMP_FRM_SNAPSHOT);
-                }
-                break;
-            }
-        }
-    }
-    //
-#endif
-
     for (uint32_t i = 0; i < recvd_frame->num_bufs; i++) {
         if (recvd_frame->bufs[i]->stream_type == CAM_STREAM_TYPE_SNAPSHOT) {
             mm_camera_buf_def_t * yuv_frame = recvd_frame->bufs[i];

@@ -1486,21 +1486,12 @@ int32_t mm_stream_read_msm_frame(mm_stream_t * my_obj,
         buf_info->buf->ts.tv_nsec = vb.timestamp.tv_usec * 1000;
         buf_info->buf->flags = vb.flags;
 
-#ifdef F_PANTECH_CAMERA_DBG_FRAME_CHECK//wsyang_debug //#02404555
-        LOGE("VIDIOC_DQBUF buf_index %d, frame_idx %d, stream type %d, rc %d,"
-                "queued: %d, buf_type = %d flags = %d",
-             vb.index, buf_info->buf->frame_idx,
-            my_obj->stream_info->stream_type, rc,
-            my_obj->queued_buffer_count, buf_info->buf->buf_type,
-            buf_info->buf->flags);
-#else
         LOGH("VIDIOC_DQBUF buf_index %d, frame_idx %d, stream type %d, rc %d,"
                 "queued: %d, buf_type = %d flags = %d",
              vb.index, buf_info->buf->frame_idx,
             my_obj->stream_info->stream_type, rc,
             my_obj->queued_buffer_count, buf_info->buf->buf_type,
             buf_info->buf->flags);
-#endif
 
         buf_info->buf->is_uv_subsampled =
             (vb.reserved == V4L2_PIX_FMT_NV14 || vb.reserved == V4L2_PIX_FMT_NV41);

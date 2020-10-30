@@ -105,11 +105,6 @@ namespace qcamera {
 
 #define TIMEOUT_NEVER -1
 
-#ifdef F_PANTECH_CAMERA_SUPPORT_SLOW_MOTION
-#define SLOWMOTION_WIDTH    720
-#define SLOWMOTION_HEIGHT   480
-#endif
-
 cam_capability_t *gCamCapability[MM_CAMERA_MAX_NUM_SENSORS];
 const camera_metadata_t *gStaticMetadata[MM_CAMERA_MAX_NUM_SENSORS];
 extern pthread_mutex_t gCamLock;
@@ -368,9 +363,6 @@ QCamera3HardwareInterface::QCamera3HardwareInterface(uint32_t cameraId,
       mLdafCalibExist(false),
       mPowerHintEnabled(false),
       mLastCustIntentFrmNum(-1),
-#ifdef F_PANTECH_CAMERA_PREPARM_CHECK_SKIP
-      mPre_sceneMode(CAM_SCENE_MODE_MAX),
-#endif      
       mState(CLOSED)
 {
     getLogLevel();
@@ -3608,11 +3600,7 @@ no_error:
         mWokenUpByDaemon = false;
         mPendingLiveRequest = 0;
         mFirstConfiguration = false;
-#if 1//for CTS //def F_PANTECH_CAMERA_QCOM_PATCH_CAPTURE_FLASH_ON//#02489616
-        //enablePowerHint();
-#else
         enablePowerHint();
-#endif
     }
 
     uint32_t frameNumber = request->frame_number;
@@ -3841,31 +3829,9 @@ no_error:
             continue;
         }
 
-#ifdef F_PANTECH_CAMERA_OEM_FLIP_MODE
-        CameraMetadata frame_settings;
-        if(request->settings != NULL){
-            frame_settings = request->settings;
-            if(frame_settings.exists(ANDROID_OEM_FLIP_MODE)){
-                int nFlip = frame_settings.find(ANDROID_OEM_FLIP_MODE).data.u8[0];
-
-                if(ADD_SET_PARAM_ENTRY_TO_BATCH(mParameters,
-                    CAM_INTF_PARM_FLIP, nFlip)) {
-                    ALOGE(">> FLIP Value ADD_SET_PARAM_ENTRY_TO_BATCH FALSE");
-                    return BAD_VALUE;
-                }
-                channel->setFlipMode(nFlip);
-            }
-        }
-#endif
-
         if (output.stream->format == HAL_PIXEL_FORMAT_BLOB) {
-#ifdef F_PANTECH_CAMERA_DBG_FRAME_CHECK//wsyang_debug //#02404555
-            LOGE("snapshot request with output buffer %p, input buffer %p, frame_number %d",
-                      output.buffer, request->input_buffer, frameNumber);
-#else           
             LOGD("snapshot request with output buffer %p, input buffer %p, frame_number %d",
                       output.buffer, request->input_buffer, frameNumber);
-#endif
             if(request->input_buffer != NULL){
                 rc = channel->request(output.buffer, frameNumber,
                         pInputBuffer, &mReprocMeta);
@@ -4742,13 +4708,6 @@ QCamera3HardwareInterface::translateFromHalMetadata(
         camMetadata.update(ANDROID_SHADING_MODE, &fwk_shadingMode, 1);
     }
 
-#ifdef F_PANTECH_CAMERA_FLASH_NEEDED
-    IF_META_AVAILABLE(cam_3a_params_t, ae_params, CAM_INTF_META_AEC_INFO, metadata) {
-        uint8_t fwk_flash_needed = (uint8_t)(ae_params->flash_needed);
-		camMetadata.update(ANDROID_FLASH_OEM_NEEDED, &fwk_flash_needed, 1);
-    }
-#endif
-
     IF_META_AVAILABLE(uint32_t, faceDetectMode, CAM_INTF_META_STATS_FACEDETECT_MODE, metadata) {
         int val = lookupFwkName(FACEDETECT_MODES_MAP, METADATA_MAP_SIZE(FACEDETECT_MODES_MAP),
                 *faceDetectMode);
@@ -5410,12 +5369,6 @@ QCamera3HardwareInterface::translateCbUrgentMetadataToResultMetadata
     CameraMetadata camMetadata;
     camera_metadata_t *resultMetadata;
 
-#ifdef F_PANTECH_CAMERA_FLASH_NEEDED
-    IF_META_AVAILABLE(cam_3a_params_t, ae_params, CAM_INTF_META_AEC_INFO, metadata) {
-        uint8_t fwk_flash_needed = (uint8_t)(ae_params->flash_needed);
-		camMetadata.update(ANDROID_FLASH_OEM_NEEDED, &fwk_flash_needed, 1);
-    }
-#endif
 
     IF_META_AVAILABLE(uint32_t, whiteBalanceState, CAM_INTF_META_AWB_STATE, metadata) {
         uint8_t fwk_whiteBalanceState = (uint8_t) *whiteBalanceState;
@@ -6577,26 +6530,6 @@ int QCamera3HardwareInterface::initStaticMetadata(uint32_t cameraId)
 
         /* Advertise only MIN_FPS_FOR_BATCH_MODE or above as HIGH_SPEED_CONFIGS */
         if (fps >= MIN_FPS_FOR_BATCH_MODE) {
-#ifdef F_PANTECH_CAMERA_SUPPORT_SLOW_MOTION
-            /*Send resolutions only used in OEM's slow motion recording*/
-            if((gCamCapability[cameraId]->hfr_tbl[i].dim.height >= SLOWMOTION_HEIGHT)
-				&&(gCamCapability[cameraId]->hfr_tbl[i].dim.width >= SLOWMOTION_WIDTH))
-            {
-                ALOGW("%s: set 720x480 @120fps for slow motion in HAL3/EF71", __func__);
-                available_hfr_configs.add(SLOWMOTION_WIDTH);
-                available_hfr_configs.add(SLOWMOTION_HEIGHT);
-                available_hfr_configs.add(PREVIEW_FPS_FOR_HFR);
-                available_hfr_configs.add(fps);
-                available_hfr_configs.add(fps / PREVIEW_FPS_FOR_HFR);
-
-                /* (width, height, fps_min, fps_max, batch_size_max) */
-                available_hfr_configs.add(SLOWMOTION_WIDTH);
-                available_hfr_configs.add(SLOWMOTION_HEIGHT);
-                available_hfr_configs.add(fps);
-                available_hfr_configs.add(fps);
-                available_hfr_configs.add(fps / PREVIEW_FPS_FOR_HFR);
-            }
-#else
             /* For each HFR frame rate, need to advertise one variable fps range
              * and one fixed fps range. Eg: for 120 FPS, advertise [30, 120] and
              * [120, 120]. While camcorder preview alone is running [30, 120] is
@@ -6621,7 +6554,6 @@ int QCamera3HardwareInterface::initStaticMetadata(uint32_t cameraId)
             available_hfr_configs.add(fps);
             available_hfr_configs.add(fps);
             available_hfr_configs.add(fps / PREVIEW_FPS_FOR_HFR);
-#endif
        }
     }
     //Advertise HFR capability only if the property is set
@@ -7620,7 +7552,6 @@ camera_metadata_t* QCamera3HardwareInterface::translateCapabilityToMetadata(int 
     bool fastModeEntryAvailable = FALSE;
     vsMode = ANDROID_CONTROL_VIDEO_STABILIZATION_MODE_OFF;
     optStabMode = ANDROID_LENS_OPTICAL_STABILIZATION_MODE_OFF;
-LOGE("[wsyang_debug] type:%d", type);    
     switch (type) {
       case CAMERA3_TEMPLATE_PREVIEW:
         controlIntent = ANDROID_CONTROL_CAPTURE_INTENT_PREVIEW;
@@ -7707,6 +7638,7 @@ LOGE("[wsyang_debug] type:%d", type);
         tonemap_mode = ANDROID_TONEMAP_MODE_FAST;
         cacMode = ANDROID_COLOR_CORRECTION_ABERRATION_MODE_FAST;
         controlIntent = ANDROID_CONTROL_CAPTURE_INTENT_CUSTOM;
+        focusMode = ANDROID_CONTROL_AF_MODE_CONTINUOUS_PICTURE;
         optStabMode = ANDROID_LENS_OPTICAL_STABILIZATION_MODE_OFF;
         break;
     }
@@ -7772,8 +7704,10 @@ LOGE("[wsyang_debug] type:%d", type);
     float default_focal_length = gCamCapability[mCameraId]->focal_length;
     settings.update(ANDROID_LENS_FOCAL_LENGTH, &default_focal_length, 1);
 
-    float default_focus_distance = 0;
-    settings.update(ANDROID_LENS_FOCUS_DISTANCE, &default_focus_distance, 1);
+    if (focusMode == ANDROID_CONTROL_AF_MODE_OFF) {
+        float default_focus_distance = 0;
+        settings.update(ANDROID_LENS_FOCUS_DISTANCE, &default_focus_distance, 1);
+    }
 
     static const uint8_t demosaicMode = ANDROID_DEMOSAIC_MODE_FAST;
     settings.update(ANDROID_DEMOSAIC_MODE, &demosaicMode, 1);
@@ -8337,17 +8271,6 @@ int QCamera3HardwareInterface::translateToHalMetadata
      * 3. AWB_MODE should precede COLOR_CORRECTION_MODE
      * 4. Any mode should precede it's corresponding settings
      */
-
-#ifdef F_PANTECH_CAMERA_CUST_VT_TUNING
-    if (frame_settings.exists(ANDROID_OEM_VT_MODE)) {
-        int nVT = frame_settings.find(ANDROID_OEM_VT_MODE).data.u8[0];
-        LOGD("ANDROID_OEM_VT_MODE Value : %d", nVT);
-        if (ADD_SET_PARAM_ENTRY_TO_BATCH(hal_metadata, CAM_INTF_PARM_IS_VT, nVT)) {
-            rc = BAD_VALUE;
-        }		
-    }		
-#endif
-
     if (frame_settings.exists(ANDROID_CONTROL_MODE)) {
         uint8_t metaMode = frame_settings.find(ANDROID_CONTROL_MODE).data.u8[0];
         if (ADD_SET_PARAM_ENTRY_TO_BATCH(hal_metadata, CAM_INTF_META_MODE, metaMode)) {
@@ -9470,42 +9393,21 @@ int32_t QCamera3HardwareInterface::extractSceneMode(
                 sizeof(SCENE_MODES_MAP)/sizeof(SCENE_MODES_MAP[0]),
                 fwk_sceneMode);
         if (NAME_NOT_FOUND != val) {
-#if 0//def F_PANTECH_CAMERA_PREPARM_CHECK_SKIP
-        if (NAME_NOT_FOUND != val && mPre_sceneMode != val)
-#endif
-
             uint8_t sceneMode = (uint8_t)val;
             LOGD("sceneMode: %d", sceneMode);
-#ifdef F_PANTECH_CAMERA_PREPARM_CHECK_SKIP
-            if (mPre_sceneMode != sceneMode) {
-                mPre_sceneMode = sceneMode;
-#endif
             if (ADD_SET_PARAM_ENTRY_TO_BATCH(hal_metadata,
                     CAM_INTF_PARM_BESTSHOT_MODE, sceneMode)) {
                 rc = BAD_VALUE;
             }
-#ifdef F_PANTECH_CAMERA_PREPARM_CHECK_SKIP
-            } else {
-                LOGD("SKIP! mPre_sceneMode:%d val: %d", mPre_sceneMode, (uint8_t)val); 
-            }
-#endif            
         }
     } else if ((ANDROID_CONTROL_MODE_OFF == metaMode) ||
             (ANDROID_CONTROL_MODE_AUTO == metaMode)) {
         uint8_t sceneMode = CAM_SCENE_MODE_OFF;
         LOGD("sceneMode: %d", sceneMode);
-#ifdef F_PANTECH_CAMERA_PREPARM_CHECK_SKIP
-        if (mPre_sceneMode != sceneMode) {
-            mPre_sceneMode = sceneMode;
-			LOGD(" sceneMode: off: %d", sceneMode);             
-#endif
         if (ADD_SET_PARAM_ENTRY_TO_BATCH(hal_metadata,
                 CAM_INTF_PARM_BESTSHOT_MODE, sceneMode)) {
             rc = BAD_VALUE;
         }
-#ifdef F_PANTECH_CAMERA_PREPARM_CHECK_SKIP 
-        }
-#endif
     }
     return rc;
 }
@@ -10226,31 +10128,5 @@ int32_t QCamera3HardwareInterface::setBundleInfo()
 
     return rc;
 }
-
-#ifdef F_PANTECH_CAMERA_OEM_FLIP_MODE
-/*===========================================================================
- * FUNCTION   : setFlipMode
- *
- * DESCRIPTION: set the value that makes the image to change left side and right side when user uses the front camera.
- *
- * PARAMETERS : flip_mode
- *
- * RETURN     : rc
- *==========================================================================*/
-int QCamera3HardwareInterface::setFlipMode(int flip_mode)
-{
-    int rc = NO_ERROR;
-
-    if(mChannelHandle){
-        for (List<stream_info_t *>::iterator it = mStreamInfo.begin();
-                it != mStreamInfo.end(); it++) {
-            QCamera3Channel *channel = (QCamera3Channel *)(*it)->stream->priv;
-            rc = channel->setFlipMode(flip_mode);
-        }
-    }
-
-    return rc;
-}
-#endif
 
 }; //end namespace qcamera

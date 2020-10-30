@@ -1011,7 +1011,6 @@ private:
     String8 createFpsString(cam_fps_range_t &fps);
     String8 createZoomRatioValuesString(uint32_t *zoomRatios, size_t length);
     int32_t setDualLedCalibration(const QCameraParameters& params);
-    int32_t setAdvancedCaptureMode();
 
     // ops for batch set/get params with server
     int32_t initBatchUpdate(parm_buffer_t *p_table);
@@ -1022,9 +1021,6 @@ private:
     int32_t updateParamEntry(const char *key, const char *value);
     int32_t commitParamChanges();
     void updateViewAngles();
-#ifdef F_PANTECH_CAMERA_CUST_VT_TUNING
-	int32_t setVT(const QCameraParameters&);
-#endif    
 
     // Map from strings to values
     static const cam_dimension_t THUMBNAIL_SIZES_MAP[];
