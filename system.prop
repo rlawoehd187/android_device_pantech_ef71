@@ -64,6 +64,7 @@ persist.ts.postmakeup=true
 persist.ts.rtmakeup=true
 
 # Charger
+ro.charger.disable_init_blank=true
 ro.charger.enable_suspend=true
 
 # CNE/DPM
