@@ -4,7 +4,7 @@ ro.config.max_starting_bg=8
 ro.sys.fw.dex2oat_thread_count=4
 
 # Audio
-#Reduce client buffer size for fast a```````````````````````````udio output tracks
+#Reduce client buffer size for fast audio output tracks
 af.fast_track_multiplier=1
 #Low latency audio buffer size in frames
 audio_hal.period_size=192
@@ -90,9 +90,6 @@ persist.hwc.mdpcomp.enable=true
 persist.demo.hdmirotationlock=false
 ro.sf.lcd_density=480
 
-# Enable Delay Service Restart
-ro.am.reschedule_service=true
-
 # Factory Reset Protection
 ro.frp.pst=/dev/block/bootdevice/by-name/config
 
@@ -164,11 +161,13 @@ persist.timed.enable=true
 ro.sys.fw.bservice_enable=true
 ro.sys.fw.bservice_limit=5
 ro.sys.fw.bservice_age=5000
-ro.sys.fw.use_trim_settings=true
-ro.sys.fw.empty_app_percent=50
-ro.sys.fw.trim_empty_percent=100
-ro.sys.fw.trim_cache_percent=100
-ro.sys.fw.trim_enable_memory=2147483648
+
+# Perf
+ro.vendor.qti.sys.fw.use_trim_settings=true
+ro.vendor.qti.sys.fw.empty_app_percent=50
+ro.vendor.qti.sys.fw.trim_empty_percent=100
+ro.vendor.qti.sys.fw.trim_cache_percent=100
+ro.vendor.qti.sys.fw.trim_enable_memory=6442450944
 
 # Wi-Fi
 wifi.interface=wlan0
