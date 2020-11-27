@@ -497,12 +497,6 @@ service perfd /system/vendor/bin/perfd
    disabled
    socket perfd seqpacket 0666 root system
 
-service iop /system/bin/iop
-    class main
-    user root
-    group root
-    disabled
-
 service qcomsysd /system/bin/qcom-system-daemon
     class main
     user root
@@ -1123,7 +1117,7 @@ service vm_bms /system/bin/vm_bms
     group root
     disabled
 
-service msm_irqbalance /vendor/bin/msm_irqbalance -f /vendor/etc/msm_irqbalance.conf
+service vendor.msm_irqbalance /vendor/bin/msm_irqbalance -f /vendor/etc/msm_irqbalance.conf
     class late_start
     user root
     group root
