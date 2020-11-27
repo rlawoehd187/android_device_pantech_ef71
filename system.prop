@@ -172,3 +172,9 @@ ro.sys.fw.trim_enable_memory=2147483648
 
 # Wi-Fi
 wifi.interface=wlan0
+
+# USB
+ro.default_usb_mode=0
+persist.service.adb.enable=1                                                    
+persist.service.debuggable=1
+persist.sys.usb.config=mtp,adb

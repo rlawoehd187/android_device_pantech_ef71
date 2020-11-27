@@ -481,24 +481,6 @@ on post-fs-data
     mkdir /data/misc/qti-logkit/socket-public/ 2750 system oem_2901
     mkdir /data/misc/qti-logkit/logdata/ 2750 system shell
 
-    # Sensors
-    # Setup sensors-related directories and permissions
-    mkdir /persist/sensors 0775
-    chown root system /persist/sensors
-    write /persist/sensors/sensors_settings 1
-    chown root system /persist/sensors/sensors_settings
-    chmod 664 /persist/sensors/sensors_settings
-    chown root system /persist/sensors/sns.reg
-    chmod 664 /persist/sensors/sns.reg
-
-    mkdir /data/misc/sensors
-    chmod 0775 /data/misc/sensors
-
-    # /dev/sensors only supports an ioctl to get the current SLPI timestamp;
-    # allow the sensors daemon to perform this as non-root
-    chown root system /dev/sensors
-    chmod 660 /dev/sensors
-
 on class_start:late_start
     write /proc/sys/net/ipv6/conf/default/accept_ra_defrtr 1
 
@@ -968,6 +950,11 @@ on property:drmdiag.load=0
 
 service qcom-sh /system/bin/sh /init.qcom.sh
     class late_start
+    user root
+    oneshot
+
+service sensor-sh /init.qcom.sensors.sh
+    class core
     user root
     oneshot
 
