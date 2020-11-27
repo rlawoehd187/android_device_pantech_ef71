@@ -622,6 +622,7 @@ service irsc_util /vendor/bin/irsc_util "/vendor/etc/sec_config"
 service rmt_storage /vendor/bin/rmt_storage
     class core
     user root
+    group system wakelock
 
 service rfs_access /vendor/bin/rfs_access
    class core
@@ -741,6 +742,8 @@ service qmuxd /system/bin/qmuxd
 
 service netmgrd /vendor/bin/netmgrd
     class main
+    user root
+    group root wifi wakelock radio inet
 
 service ipacm-diag /vendor/bin/ipacm-diag
     class main
