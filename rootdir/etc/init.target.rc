@@ -129,10 +129,10 @@ service thermal-engine /system/vendor/bin/thermal-engine -c ${sys.qcom.thermalcf
     socket thermal-send-rule stream 0660 system system
    group root
 
-service time_daemon /vendor/bin/time_daemon
-   class late_start
-   user root
-   group root
+service time_daemon /system/vendor/bin/time_daemon
+    class main
+    user root
+    group root
 
 on boot
     start rmt_storage
