@@ -331,7 +331,7 @@ PRODUCT_COPY_FILES += \
 
 # Thermal
 PRODUCT_COPY_FILES += \
-    $(LOCAL_PATH)/configs/thermal-engine-8937.conf:system/etc/thermal-engine-8937.conf
+    $(LOCAL_PATH)/configs/thermal-engine-8937.conf:$(TARGET_COPY_OUT_VENDOR)/etc/thermal-engine-8937.conf
 
 #Touchscreen
 PRODUCT_PACKAGES += \
