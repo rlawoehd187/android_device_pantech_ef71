@@ -44,7 +44,7 @@ on fs
     write /proc/sys/vm/swappiness 100
 
 on post-fs
-    export LD_PRELOAD libNimsWrap.so
+#    export LD_PRELOAD libNimsWrap.so
 
 on post-fs-data
     mkdir /data/tombstones 0771 system system
@@ -56,10 +56,6 @@ on post-fs-data
     mkdir /persist/data/tz 0700 system system
     mkdir /data/misc/hbtp 0750 system system
     mkdir /data/misc/dts 0770 media audio
-    #PANTECH_STORAGE_INTERNAL_EMUL
-    mkdir /data/sd_detect 0700 root system
-    # lsi@bs1 FEATURE_PANTECH_DXHDCP_PROVISIONING
-    mkdir /data/misc/HdcpLogs 0750 system system
 
 #Create folder for mm-qcamera-daemon
     mkdir /data/vendor/camera 0770 camera camera
@@ -226,13 +222,13 @@ service ims_rtp_daemon /system/bin/ims_rtp_daemon
    class main
    user system
    socket ims_rtpd stream 0660 system radio
-   group radio net_raw diag diag inet log
+   group radio net_raw diag inet log
    disabled
 
 service imscmservice /system/bin/imscmservice
    class main
    user system
-   group radio net_raw diag diag log
+   group radio net_raw diag log
    disabled
 
 on property:sys.ims.DATA_DAEMON_STATUS=1

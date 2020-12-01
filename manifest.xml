@@ -28,7 +28,7 @@
     </hal>
     <hal format="hidl">
         <name>android.hardware.camera.provider</name>
-        <transport>hwbinder</transport>
+        <transport arch="32+64">passthrough</transport>
         <version>2.4</version>
         <interface>
             <name>ICameraProvider</name>
@@ -101,6 +101,15 @@
         <version>2.0</version>
         <interface>
             <name>IMapper</name>
+            <instance>default</instance>
+        </interface>
+    </hal>
+    <hal format="hidl">
+        <name>android.hardware.health</name>
+        <transport>hwbinder</transport>
+        <version>1.0</version>
+        <interface>
+            <name>IHealth</name>
             <instance>default</instance>
         </interface>
     </hal>
@@ -199,7 +208,7 @@
     </hal>
     <hal format="hidl">
         <name>android.hardware.sensors</name>
-        <transport>hwbinder</transport>
+        <transport arch="32+64">passthrough</transport>
         <version>1.0</version>
         <interface>
             <name>ISensors</name>
@@ -284,6 +293,15 @@
         <version>1.0</version>
         <interface>
             <name>IDisplayPostproc</name>
+            <instance>default</instance>
+        </interface>
+    </hal>
+    <hal format="hidl">
+        <name>vendor.lineage.power</name>
+        <transport>hwbinder</transport>
+        <version>1.0</version>
+        <interface>
+            <name>ILineagePower</name>
             <instance>default</instance>
         </interface>
     </hal>
