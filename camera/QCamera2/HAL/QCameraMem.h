@@ -1,4 +1,4 @@
-/* Copyright (c) 2012-2016, The Linux Foundation. All rights reserved.
+/* Copyright (c) 2012-2017, The Linux Foundation. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
@@ -35,9 +35,6 @@
 #include <utils/Mutex.h>
 #include <utils/List.h>
 
-//Media depedancies
-#include "OMX_QCOMExtns.h"
-
 // Display dependencies
 #include "qdMetaData.h"
 
@@ -54,14 +51,8 @@ class QCameraMemoryPool;
 
 //OFFSET, SIZE, USAGE, TIMESTAMP, FORMAT
 #define VIDEO_METADATA_NUM_INTS          5
-
 //Buffer identity
-//Note that this macro might have already been
-//defined in OMX_QCOMExtns.h, in which case
-//the local value below will not be used.
-#ifndef VIDEO_METADATA_NUM_COMMON_INTS
 #define VIDEO_METADATA_NUM_COMMON_INTS   1
-#endif
 
 enum QCameraMemType {
     QCAMERA_MEM_TYPE_DEFAULT      = 0,
@@ -69,11 +60,6 @@ enum QCameraMemType {
     QCAMERA_MEM_TYPE_BATCH        = (1 << 1),
     QCAMERA_MEM_TYPE_COMPRESSED   = (1 << 2),
 };
-
-typedef enum {
-    STATUS_IDLE,
-    STATUS_SKIPPED
-} BufferStatus;
 
 // Base class for all memory types. Abstract.
 class QCameraMemory {
@@ -208,6 +194,7 @@ public:
 class QCameraStreamMemory : public QCameraMemory {
 public:
     QCameraStreamMemory(camera_request_memory getMemory,
+                        void* cbCookie,
                         bool cached,
                         QCameraMemoryPool *pool = NULL,
                         cam_stream_type_t streamType = CAM_STREAM_TYPE_DEFAULT,
@@ -226,13 +213,14 @@ public:
 protected:
     camera_request_memory mGetMemory;
     camera_memory_t *mCameraMemory[MM_CAMERA_MAX_NUM_FRAMES];
+    void* mCallbackCookie;
 };
 
 // Externel heap memory is used for memories shared with
 // framework. They are allocated from /dev/ion or gralloc.
 class QCameraVideoMemory : public QCameraStreamMemory {
 public:
-    QCameraVideoMemory(camera_request_memory getMemory, bool cached,
+    QCameraVideoMemory(camera_request_memory getMemory, void* cbCookie, bool cached,
             QCameraMemType bufType = QCAMERA_MEM_TYPE_DEFAULT);
     virtual ~QCameraVideoMemory();
 
@@ -265,7 +253,7 @@ class QCameraGrallocMemory : public QCameraMemory {
         BUFFER_OWNED,
     };
 public:
-    QCameraGrallocMemory(camera_request_memory getMemory);
+    QCameraGrallocMemory(camera_request_memory getMemory, void* cbCookie);
     void setNativeWindow(preview_stream_ops_t *anw);
     virtual ~QCameraGrallocMemory();
 
@@ -290,17 +278,16 @@ public:
     void setMaxFPS(int maxFPS);
     int32_t enqueueBuffer(uint32_t index, nsecs_t timeStamp = 0);
     int32_t dequeueBuffer();
-    inline bool isBufSkipped(uint32_t index){return (mBufferStatus[index] == STATUS_SKIPPED);};
-    void setBufferStatus(uint32_t index, BufferStatus status);
+
 private:
     buffer_handle_t *mBufferHandle[MM_CAMERA_MAX_NUM_FRAMES];
     int mLocalFlag[MM_CAMERA_MAX_NUM_FRAMES];
-    bool mBufferStatus[MM_CAMERA_MAX_NUM_FRAMES];
     struct private_handle_t *mPrivateHandle[MM_CAMERA_MAX_NUM_FRAMES];
     preview_stream_ops_t *mWindow;
     int mWidth, mHeight, mFormat, mStride, mScanline, mUsage;
     typeof (MetaData_t::refreshrate) mMaxFPS;
     camera_request_memory mGetMemory;
+    void* mCallbackCookie;
     camera_memory_t *mCameraMemory[MM_CAMERA_MAX_NUM_FRAMES];
     int mMinUndequeuedBuffers;
     enum ColorSpace_t mColorSpace;
