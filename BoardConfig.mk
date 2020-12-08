@@ -223,7 +223,7 @@ TARGET_PROVIDES_LIBLIGHT := true
 TARGET_RIL_VARIANT := caf
 
 # Recovery
-TARGET_RECOVERY_FSTAB := $(DEVICE_PATH)/rootdir/etc/fstab.qcom
+TARGET_RECOVERY_FSTAB := $(DEVICE_PATH)/rootdir/etc/recovery.qcom
 
 # SELinux
 #BOARD_SEPOLICY_DIRS += \
