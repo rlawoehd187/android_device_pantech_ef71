@@ -596,16 +596,6 @@ on property:bluetooth.startbtlogger=true
 on property:bluetooth.startbtlogger=false
     stop bt_logger
 
-service qcom-c_core-sh /vendor/bin/init.qcom.class_core.sh
-    class core
-    user root
-    oneshot
-
-service qcom-c_main-sh /vendor/bin/init.class_main.sh
-    class main
-    user root
-    oneshot
-
 on property:vold.decrypt=trigger_restart_framework
     start qcom-c_main-sh
     start wcnss-service
@@ -919,6 +909,10 @@ service ril-daemon2 /vendor/bin/hw/rild -c 2
     user radio
     group radio cache inet misc audio sdcard_r sdcard_rw diag oem_2901 log
     capabilities BLOCK_SUSPEND NET_ADMIN NET_RAW
+
+# Set vendor-ril lib path based on Meta version
+on property:vendor.rild.libpath=*
+    setprop rild.libpath ${vendor.rild.libpath}
 
 service usb_uicc_enable /system/bin/sh /system/etc/init.qcom.uicc.sh
     class late_start

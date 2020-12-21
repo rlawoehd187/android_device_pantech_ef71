@@ -74,7 +74,13 @@ PRODUCT_COPY_FILES += \
     frameworks/native/data/etc/com.android.nfc_extras.xml:system/etc/permissions/com.android.nfc_extras.xml \
     frameworks/native/data/etc/com.nxp.mifare.xml:system/etc/permissions/com.nxp.mifare.xml
 
-#Audio
+# ANT
+PRODUCT_PACKAGES += \
+    AntHalService \
+    com.dsi.ant.antradio_library \
+    libantradio
+
+# Audio
 PRODUCT_PACKAGES += \
     android.hardware.audio@2.0-impl \
     android.hardware.audio@2.0-service \
@@ -93,7 +99,7 @@ PRODUCT_PACKAGES += \
     libvolumelistener \
     tinymix
 
-#Audio mixer
+# Audio mixer
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/audio/audio_effects.xml:$(TARGET_COPY_OUT_VENDOR)/etc/audio_effects.xml \
     $(LOCAL_PATH)/audio/audio_output_policy.conf:$(TARGET_COPY_OUT_VENDOR)/etc/audio_output_policy.conf \
@@ -210,17 +216,12 @@ PRODUCT_COPY_FILES += \
 # Init
 PRODUCT_PACKAGES += \
     fstab.qcom \
-    init.class_main.sh \
-    init.qcom.early_boot.sh \
-    init.mdm.sh \
     init.qcom.rc \
     init.qcom.sh \
     init.qcom.power.rc \
     init.qcom.usb.rc \
-    init.qcom.wifi.sh \
     init.target.rc \
     ueventd.qcom.rc \
-    init.qcom.class_core.sh \
     init.qcom.usb.sh \
     init.qcom.sensors.sh \
     loggy.sh
