@@ -204,6 +204,9 @@ PRODUCT_PACKAGES += \
     android.hidl.manager@1.0 \
     android.hidl.manager@1.0-java
 
+PRODUCT_COPY_FILES += \
+    $(LOCAL_PATH)/configs/qti_libpermissions.xml:system/etc/permissions/qti_libpermissions.xml
+
 # Init
 PRODUCT_PACKAGES += \
     fstab.qcom \
