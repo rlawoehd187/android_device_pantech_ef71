@@ -68,8 +68,7 @@ persist.ts.postmakeup=true
 persist.ts.rtmakeup=true
 
 # CNE/DPM
-persist.cne.feature=1
-persist.vendor.dpm.feature=11
+persist.vendor.cne.feature=1
 
 # Display
 ro.opengles.version=196610

@@ -21,6 +21,16 @@ vendor/lib/rfsa/adsp/libscveObjectSegmentation_skel.so
 vendor/lib/rfsa/adsp/libscveT2T_skel.so
 vendor/lib/rfsa/adsp/libscveTextReco_skel.so
 
+# Alarm - from TA-1024
+-framework/vendor.qti.hardware.alarm-V1.0-java.jar
+-vendor/app/PowerOffAlarm/PowerOffAlarm.apk
+vendor/bin/hw/vendor.qti.hardware.alarm@1.0-service
+vendor/etc/init/vendor.qti.hardware.alarm@1.0-service.rc
+vendor/lib/hw/vendor.qti.hardware.alarm@1.0-impl.so
+vendor/lib/vendor.qti.hardware.alarm@1.0.so
+vendor/lib64/hw/vendor.qti.hardware.alarm@1.0-impl.so
+vendor/lib64/vendor.qti.hardware.alarm@1.0.so
+
 # ANT+
 lib/com.qualcomm.qti.ant@1.0.so
 -lib/libantradio.so
@@ -111,14 +121,25 @@ vendor/lib64/libbt-hidlclient.so
 # Bluetooth (shared dependencies)
 vendor/lib64/vendor.qti.hardware.fm@1.0_vendor.so
 
-# CNE
-etc/cne/andsfCne.xml
-etc/cne/SwimConfig.xml
+# CNE - from Panther
 etc/permissions/cneapiclient.xml
 etc/permissions/com.quicinc.cne.xml
-framework/cneapiclient.jar
-framework/com.quicinc.cne.api-V1.0-java.jar
-framework/com.quicinc.cne.jar
+-framework/cneapiclient.jar
+-framework/com.quicinc.cne.api-V1.0-java.jar
+-framework/com.quicinc.cne.api-V1.1-java.jar
+-framework/com.quicinc.cne.constants-V1.0-java.jar
+-framework/com.quicinc.cne.constants-V2.0-java.jar
+-framework/com.quicinc.cne.constants-V2.1-java.jar
+-framework/com.quicinc.cne.jar
+-framework/com.quicinc.cne.server-V1.0-java.jar
+-framework/com.quicinc.cne.server-V2.0-java.jar
+-framework/com.quicinc.cne.server-V2.1-java.jar
+-framework/com.quicinc.cne.server-V2.2-java.jar
+-framework/vendor.qti.data.factory-V1.0-java.jar
+-framework/vendor.qti.hardware.data.dynamicdds-V1.0-java.jar
+-framework/vendor.qti.hardware.data.latency-V1.0-java.jar
+-framework/vendor.qti.hardware.data.qmi-V1.0-java.jar
+-framework/vendor.qti.latency-V2.0-java.jar
 -priv-app/CNEService/CNEService.apk
 vendor/bin/cnd
 vendor/etc/cne/wqeclient/ATT/ATT_profile1.xml
@@ -134,6 +155,14 @@ vendor/etc/cne/wqeclient/ROW/ROW_profile4.xml
 vendor/etc/cne/wqeclient/ROW/ROW_profile5.xml
 vendor/etc/cne/wqeclient/ROW/ROW_profile6.xml
 vendor/etc/cne/wqeclient/ROW/ROW_profile7.xml
+vendor/etc/cne/wqeclient/ROW/ROW_profile15.xml
+vendor/etc/cne/wqeclient/ROW/ROW_profile16.xml
+vendor/etc/cne/wqeclient/ROW/ROW_profile17.xml
+vendor/etc/cne/wqeclient/ROW/ROW_profile18.xml
+vendor/etc/cne/wqeclient/ROW/ROW_profile19.xml
+vendor/etc/cne/wqeclient/ROW/ROW_profile20.xml
+vendor/etc/cne/wqeclient/ROW/ROW_profile21.xml
+vendor/etc/cne/wqeclient/ROW/ROW_profile32.xml
 vendor/etc/cne/wqeclient/VZW/VZW_profile1.xml
 vendor/etc/cne/wqeclient/VZW/VZW_profile2.xml
 vendor/etc/cne/wqeclient/VZW/VZW_profile3.xml
@@ -141,32 +170,49 @@ vendor/etc/cne/wqeclient/VZW/VZW_profile4.xml
 vendor/etc/cne/wqeclient/VZW/VZW_profile5.xml
 vendor/etc/cne/wqeclient/VZW/VZW_profile6.xml
 vendor/lib/com.quicinc.cne.api@1.0.so
+vendor/lib/com.quicinc.cne.api@1.1.so
 vendor/lib/com.quicinc.cne.constants@1.0.so
 vendor/lib/com.quicinc.cne.constants@2.0.so
-vendor/lib/com.quicinc.cne.server@1.0.so
+vendor/lib/com.quicinc.cne.constants@2.1.so
 vendor/lib/com.quicinc.cne.server@2.0.so
+vendor/lib/com.quicinc.cne.server@2.1.so
+vendor/lib/com.quicinc.cne.server@2.2.so
 vendor/lib/libcne.so
 vendor/lib/libcneapiclient.so
 vendor/lib/libcneoplookup.so
 vendor/lib/libcneqmiutils.so
+vendor/lib/libwms.so
 vendor/lib/libwqe.so
 vendor/lib/libxml.so
+vendor/lib/vendor.qti.data.factory@1.0.so
+vendor/lib/vendor.qti.hardware.data.dynamicdds@1.0.so
+vendor/lib/vendor.qti.hardware.data.latency@1.0.so
+vendor/lib/vendor.qti.hardware.data.qmi@1.0.so
+vendor/lib/vendor.qti.latency@2.0.so
 vendor/lib64/com.quicinc.cne.api@1.0.so
+vendor/lib64/com.quicinc.cne.api@1.1.so
 vendor/lib64/com.quicinc.cne.constants@1.0.so
 vendor/lib64/com.quicinc.cne.constants@2.0.so
-vendor/lib64/com.quicinc.cne.server@1.0.so
+vendor/lib64/com.quicinc.cne.constants@2.1.so
 vendor/lib64/com.quicinc.cne.server@2.0.so
+vendor/lib64/com.quicinc.cne.server@2.1.so
+vendor/lib64/com.quicinc.cne.server@2.2.so
 vendor/lib64/libcne.so
 vendor/lib64/libcneapiclient.so
 vendor/lib64/libcneoplookup.so
 vendor/lib64/libcneqmiutils.so
+vendor/lib64/libwms.so
 vendor/lib64/libwqe.so
 vendor/lib64/libxml.so
+vendor/lib64/vendor.qti.data.factory@1.0.so
+vendor/lib64/vendor.qti.hardware.data.dynamicdds@1.0.so
+vendor/lib64/vendor.qti.hardware.data.latency@1.0.so
+vendor/lib64/vendor.qti.hardware.data.qmi@1.0.so
+vendor/lib64/vendor.qti.latency@2.0.so
 
-# DPM - from TA-1003 (Nokia 5)
+# DPM - from Panther
 bin/dpmd
 etc/dpm/dpm.conf
-etc/dpm/nsrm/NsrmConfiguration.xml
 etc/init/dpmd.rc
 etc/permissions/com.qti.dpmframework.xml
 etc/permissions/dpmapi.xml
@@ -178,21 +224,19 @@ lib/com.qualcomm.qti.dpm.api@1.0.so
 lib/libdpmctmgr.so
 lib/libdpmfdmgr.so
 lib/libdpmframework.so
-lib/libdpmnsrm.so
 lib/libdpmtcm.so
 lib64/com.qualcomm.qti.dpm.api@1.0.so
 lib64/libdpmctmgr.so
 lib64/libdpmfdmgr.so
 lib64/libdpmframework.so
-lib64/libdpmnsrm.so
 lib64/libdpmtcm.so
 vendor/bin/dpmQmiMgr
-vendor/lib/com.qualcomm.qti.dpm.api@1.0_vendor.so
+vendor/lib/com.qualcomm.qti.dpm.api@1.0.so
 vendor/lib/libdpmqmihal.so
-vendor/lib64/com.qualcomm.qti.dpm.api@1.0_vendor.so
+vendor/lib64/com.qualcomm.qti.dpm.api@1.0.so
 vendor/lib64/libdpmqmihal.so
 
-# DRM - from TA-1003 (Nokia 5)
+# DRM - from TA-1024
 lib/libGPTEE_system.so
 lib/libQTEEConnector_system.so
 lib/vendor.qti.hardware.qteeconnector@1.0.so
@@ -218,7 +262,7 @@ vendor/lib/libStDrvInt.so
 vendor/lib/libtzdrmgenprov.so
 vendor/lib/libGPTEE_vendor.so
 vendor/lib/libQTEEConnector_vendor.so
-vendor/lib/vendor.qti.hardware.qteeconnector@1.0_vendor.so
+vendor/lib/vendor.qti.hardware.qteeconnector@1.0.so
 vendor/lib/hw/vendor.qti.hardware.qteeconnector@1.0-impl.so
 vendor/lib64/libdrmfs.so
 vendor/lib64/libdrmtime.so
@@ -235,8 +279,25 @@ vendor/lib64/libStDrvInt.so
 vendor/lib64/libtzdrmgenprov.so
 vendor/lib64/libGPTEE_vendor.so
 vendor/lib64/libQTEEConnector_vendor.so
-vendor/lib64/vendor.qti.hardware.qteeconnector@1.0_vendor.so
+vendor/lib64/vendor.qti.hardware.qteeconnector@1.0.so
 vendor/lib64/hw/vendor.qti.hardware.qteeconnector@1.0-impl.so
+
+# DRM (Widevine) - from TA-1024
+vendor/bin/hw/android.hardware.drm@1.1-service.widevine
+vendor/etc/init/android.hardware.drm@1.1-service.widevine.rc
+vendor/lib/mediadrm/libwvdrmengine.so
+vendor/lib64/mediadrm/libwvdrmengine.so
+vendor/lib64/libwvhidl.so
+
+# DRM (Widevine firmware) - from TA-1024
+vendor/firmware/widevine.b00
+vendor/firmware/widevine.b01
+vendor/firmware/widevine.b02
+vendor/firmware/widevine.b03
+vendor/firmware/widevine.b04
+vendor/firmware/widevine.b05
+vendor/firmware/widevine.b06
+vendor/firmware/widevine.mdt
 
 # ESE-Powermanager - from TA-1003 (Nokia 5)
 vendor/bin/hw/vendor.qti.esepowermanager@1.0-service
@@ -328,20 +389,11 @@ vendor/lib64/libxtadapter.so
 vendor/lib64/libxtwifi_ulp_adaptor.so
 vendor/lib64/vendor.qti.gnss@1.0_vendor.so
 
-# Graphics - from TA-1003 (Nokia 5)
-lib/egl/libGLES_android.so
-lib64/egl/libGLES_android.so
+# Graphics - from TA-1024
 vendor/lib/egl/eglSubDriverAndroid.so
-vendor/lib/egl/eglsubAndroid.so
 vendor/lib/egl/libEGL_adreno.so
-vendor/lib/egl/libESXEGL_adreno.so
-vendor/lib/egl/libESXGLESv1_CM_adreno.so
-vendor/lib/egl/libESXGLESv2_adreno.so
 vendor/lib/egl/libGLESv1_CM_adreno.so
 vendor/lib/egl/libGLESv2_adreno.so
-vendor/lib/egl/libRBEGL_adreno.so
-vendor/lib/egl/libRBGLESv1_CM_adreno.so
-vendor/lib/egl/libRBGLESv2_adreno.so
 vendor/lib/egl/libq3dtools_adreno.so
 vendor/lib/egl/libq3dtools_esx.so
 vendor/lib/egl/libQTapGLES.so
@@ -351,33 +403,21 @@ vendor/lib/libbccQTI.so
 vendor/lib/libC2D2.so
 vendor/lib/libc2d30_bltlib.so
 vendor/lib/libc2d30-a3xx.so
-vendor/lib/libc2d30-a4xx.so
-vendor/lib/libc2d30-a5xx.so
 vendor/lib/libCB.so
 vendor/lib/libgsl.so
 vendor/lib/libhdr_tm.so
 vendor/lib/libllvm-glnext.so
 vendor/lib/libllvm-qcom.so
-vendor/lib/libllvm-qgl.so
-vendor/lib/libmm-disp-apis.so
 vendor/lib/libmm-hdcpmgr.so
-vendor/lib/libmm-qdcm.so
 vendor/lib/libOpenCL.so
 vendor/lib/librs_adreno_sha1.so
 vendor/lib/librs_adreno.so
 vendor/lib/libRSDriver_adreno.so
 vendor/lib/libscalar.so
 vendor/lib64/egl/eglSubDriverAndroid.so
-vendor/lib64/egl/eglsubAndroid.so
 vendor/lib64/egl/libEGL_adreno.so
-vendor/lib64/egl/libESXEGL_adreno.so
-vendor/lib64/egl/libESXGLESv1_CM_adreno.so
-vendor/lib64/egl/libESXGLESv2_adreno.so
 vendor/lib64/egl/libGLESv1_CM_adreno.so
 vendor/lib64/egl/libGLESv2_adreno.so
-vendor/lib64/egl/libRBEGL_adreno.so
-vendor/lib64/egl/libRBGLESv1_CM_adreno.so
-vendor/lib64/egl/libRBGLESv2_adreno.so
 vendor/lib64/egl/libq3dtools_adreno.so
 vendor/lib64/egl/libq3dtools_esx.so
 vendor/lib64/egl/libQTapGLES.so
@@ -387,27 +427,20 @@ vendor/lib64/libbccQTI.so
 vendor/lib64/libC2D2.so
 vendor/lib64/libc2d30_bltlib.so
 vendor/lib64/libc2d30-a3xx.so
-vendor/lib64/libc2d30-a4xx.so
-vendor/lib64/libc2d30-a5xx.so
 vendor/lib64/libCB.so
 vendor/lib64/libgsl.so
 vendor/lib64/libhdr_tm.so
 vendor/lib64/libllvm-glnext.so
 vendor/lib64/libllvm-qcom.so
-vendor/lib64/libllvm-qgl.so
-vendor/lib64/libmm-disp-apis.so
 vendor/lib64/libmm-hdcpmgr.so
-vendor/lib64/libmm-qdcm.so
 vendor/lib64/libOpenCL.so
 vendor/lib64/librs_adreno_sha1.so
 vendor/lib64/librs_adreno.so
 vendor/lib64/libRSDriver_adreno.so
 vendor/lib64/libscalar.so
 
-# Graphics - SDM - from TA-1003 (Nokia 5)
-lib/libsd_sdk_display.so
+# Graphics - SDM - from TA-1024
 lib/libsdm-disp-apis.so
-lib64/libsd_sdk_display.so
 lib64/libsdm-disp-apis.so
 vendor/lib/libsdm-color.so
 vendor/lib/libsdm-diag.so
@@ -420,29 +453,50 @@ vendor/lib64/libsdm-diag.so
 vendor/lib64/libsdmextension.so
 vendor/lib64/libtinyxml2_1.so
 
-# Graphics firmware
-etc/firmware/a530_gpmu.fw2
-etc/firmware/a530_pfp.fw
-etc/firmware/a530_pm4.fw
-etc/firmware/a530v1_pfp.fw
-etc/firmware/a530v1_pm4.fw
-etc/firmware/a530v2_seq.fw2
-etc/firmware/a530v3_gpmu.fw2
-etc/firmware/a530v3_seq.fw2
+# Graphics firmware - from TA-1024
+vendor/firmware/a530_gpmu.fw2
+vendor/firmware/a530_pfp.fw
+vendor/firmware/a530_pm4.fw
+vendor/firmware/a530v1_pfp.fw
+vendor/firmware/a530v1_pm4.fw
+vendor/firmware/a530v2_seq.fw2
+vendor/firmware/a530v3_gpmu.fw2
+vendor/firmware/a530v3_seq.fw2
+vendor/firmware/a540_gpmu.fw2
 
-# Keystore
-lib64/hw/keystore.default.so
-vendor/lib/hw/keystore.msm8937.so
-vendor/lib64/hw/keystore.msm8937.so
+# Keystore - from TA-1024
+vendor/lib/hw/keystore.msm8937.so:vendor/lib/hw/keystore.msm8937.so
+vendor/lib64/hw/keystore.msm8937.so:vendor/lib64/hw/keystore.msm8937.so
+
+# Keymaster - from TA-1024
+vendor/lib/libkeymasterutils.so
+vendor/lib/libkeymasterprovision.so
+vendor/lib/libkeymasterdeviceutils.so
+vendor/lib64/libkeymasterutils.so
+vendor/lib64/libkeymasterprovision.so
+vendor/lib64/libkeymasterdeviceutils.so
 
 # Listen
 vendor/lib/hw/sound_trigger.primary.msm8937.so
 vendor/lib/libadpcmdec.so
 vendor/lib/libsmwrapper.so
 
-# Media
+# Media - from TA-1024
+lib/extractors/libmmparser.so
+lib/libFileMux.so
+lib/libmmosal.so
+lib/libmmparser_lite.so
+lib/libOmxMux.so
+lib/vendor.qti.hardware.vpp@1.1.so
+lib64/extractors/libmmparser.so
+lib64/libFileMux.so
+lib64/libmmosal.so
+lib64/libmmparser_lite.so
+lib64/libOmxMux.so
+lib64/vendor.qti.hardware.vpp@1.1.so
+vendor/lib/libAlacSwDec.so
+vendor/lib/libApeSwDec.so
 vendor/lib/libI420colorconvert.so
-vendor/lib/libmmosal_proprietary.so
 vendor/lib/libOmxAacDec.so
 vendor/lib/libOmxAlacDec.so
 vendor/lib/libOmxAlacDecSw.so
@@ -450,15 +504,19 @@ vendor/lib/libOmxAmrDec.so
 vendor/lib/libOmxAmrwbplusDec.so
 vendor/lib/libOmxApeDec.so
 vendor/lib/libOmxApeDecSw.so
+vendor/lib/libOmxDsdDec.so
 vendor/lib/libOmxEvrcDec.so
 vendor/lib/libOmxQcelp13Dec.so
 vendor/lib/libOmxVideoDSMode.so
 vendor/lib/libOmxVpp.so
 vendor/lib/libOmxWmaDec.so
--vendor/lib/libgpustats.so
+vendor/lib/libmmosal_proprietary.so
 vendor/lib/libmm-color-convertor.so
 vendor/lib/libvpplibrary.so
 vendor/lib/libvqzip.so
+vendor/lib/vendor.qti.hardware.vpp@1.1.so
+vendor/lib64/libAlacSwDec.so
+vendor/lib64/libApeSwDec.so
 vendor/lib64/libI420colorconvert.so
 vendor/lib64/libOmxAacDec.so
 vendor/lib64/libOmxAlacDec.so
@@ -471,13 +529,20 @@ vendor/lib64/libOmxEvrcDec.so
 vendor/lib64/libOmxQcelp13Dec.so
 vendor/lib64/libOmxVpp.so
 vendor/lib64/libOmxWmaDec.so
--vendor/lib64/libgpustats.so
+vendor/lib64/libmmosal_proprietary.so
 vendor/lib64/libmm-color-convertor.so
 vendor/lib64/libvpplibrary.so
+vendor/lib64/vendor.qti.hardware.vpp@1.1.so
 
-# Modem
-vendor/lib/libwms.so
-vendor/lib64/libwms.so
+# Media - from TA-1024
+vendor/lib/libOmxSwVdec.so
+vendor/lib/libOmxSwVencMpeg4.so
+vendor/lib/libMpeg4SwEncoder.so
+vendor/lib/libswvdec.so
+vendor/lib64/libOmxSwVdec.so
+vendor/lib64/libOmxSwVencMpeg4.so
+vendor/lib64/libMpeg4SwEncoder.so
+vendor/lib64/libswvdec.so
 
 # Perf - from TA-1024
 lib/libqti-at.so
@@ -804,25 +869,24 @@ vendor/lib64/sensors.ssc.so
 # Subsystem restart
 bin/ssr_diag
 
-# Thermal
+# Thermal - from TA-1024
 vendor/bin/thermal-engine
-vendor/lib/libthermalclient.so
-vendor/lib64/libthermalclient.so
-vendor/lib64/libthermalioctl.so
+-vendor/lib/libthermalclient.so
+-vendor/lib64/libthermalclient.so
 
-# Time services - from TA-1003 (Nokia 5)
+# Time services - from TA-1024
 -vendor/app/TimeService/TimeService.apk
 vendor/bin/time_daemon
 -vendor/lib/libtime_genoff.so
 -vendor/lib64/libtime_genoff.so
 
-# TUI
+# TUI - from TA-1024
 lib/vendor.qti.hardware.tui_comm@1.0.so
 lib64/vendor.qti.hardware.tui_comm@1.0.so
 vendor/bin/hw/vendor.qti.hardware.tui_comm@1.0-service-qti
 vendor/etc/init/vendor.qti.hardware.tui_comm@1.0-service-qti.rc
-vendor/lib/vendor.qti.hardware.tui_comm@1.0_vendor.so
-vendor/lib64/vendor.qti.hardware.tui_comm@1.0_vendor.so
+vendor/lib/vendor.qti.hardware.tui_comm@1.0.so
+vendor/lib64/vendor.qti.hardware.tui_comm@1.0.so
 
 # USB
 etc/firmware/ice40.bin
