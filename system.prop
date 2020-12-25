@@ -133,9 +133,9 @@ vendor.vidc.enc.disable.pq=true
 video.disable.ubwc=1
 
 #netmgrd
+ro.vendor.use_data_netmgrd=true
 persist.data.netmgrd.qos.enable=true
-ro.use_data_netmgrd=true
-persist.data.mode=concurrent
+persist.vendor.data.mode=concurrent
 
 # Perf
 ro.sys.fw.dex2oat_thread_count=4
