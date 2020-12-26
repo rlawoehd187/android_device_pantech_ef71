@@ -904,9 +904,6 @@ vendor/lib64/vendor.qti.hardware.tui_comm@1.0.so
 # USB
 etc/firmware/ice40.bin
 
-# Widevine
-vendor/lib/mediadrm/libwvdrmengine.so
-
 # Wi-Fi
 vendor/bin/wcnss_service
 
