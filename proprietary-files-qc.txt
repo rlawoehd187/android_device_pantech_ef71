@@ -1,25 +1,26 @@
-# ADSP
-bin/adsprpcd
-vendor/lib/libadsprpc.so
+# ADSP - from TA-1024
+vendor/bin/adsprpcd
 vendor/lib/libadsp_default_listener.so
+vendor/lib/libadsprpc.so
+-vendor/lib/libaudio_log_utils.so
+vendor/lib/libcdsprpc.so
 vendor/lib/libfastcvadsp_stub.so
 vendor/lib/libfastcvopt.so
-vendor/lib64/libadsprpc.so
+vendor/lib/libqtigef.so
+vendor/lib/libsdsprpc.so
 vendor/lib64/libadsp_default_listener.so
+vendor/lib64/libadsprpc.so
+-vendor/lib64/libaudio_log_utils.so
+vendor/lib64/libcdsprpc.so
+vendor/lib64/libfastcvadsp_stub.so
+vendor/lib64/libqtigef.so
+vendor/lib64/libsdsprpc.so
 
-# ADSP modules
-vendor/lib/rfsa/adsp/libadsp_fd_skel.so
+# ADSP modules - from TA-1024
 vendor/lib/rfsa/adsp/libapps_mem_heap.so
 vendor/lib/rfsa/adsp/libdspCV_skel.so
 vendor/lib/rfsa/adsp/libfastcvadsp.so
 vendor/lib/rfsa/adsp/libfastcvadsp_skel.so
-vendor/lib/rfsa/adsp/libFastRPC_UTF_Forward_skel.so
-vendor/lib/rfsa/adsp/libobjectMattingApp_skel.so
-vendor/lib/rfsa/adsp/libscveBlobDescriptor_skel.so
-vendor/lib/rfsa/adsp/libscveCleverCapture_skel.so
-vendor/lib/rfsa/adsp/libscveObjectSegmentation_skel.so
-vendor/lib/rfsa/adsp/libscveT2T_skel.so
-vendor/lib/rfsa/adsp/libscveTextReco_skel.so
 
 # Alarm - from TA-1024
 -framework/vendor.qti.hardware.alarm-V1.0-java.jar
