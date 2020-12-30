@@ -1,4 +1,4 @@
-/* Copyright (c) 2012-2016, The Linux Foundation. All rights reserved.
+/* Copyright (c) 2012-2017, The Linux Foundation. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
@@ -97,7 +97,7 @@ static int32_t mm_camera_poll_sig_async(mm_camera_poll_thread_t *poll_cb,
     /* send cmd to worker */
     ssize_t len = write(poll_cb->pfds[1], &cmd_evt, sizeof(cmd_evt));
     if (len < 1) {
-        LOGE("len = %lld, errno = %d",
+        LOGW("len = %lld, errno = %d",
                 (long long int)len, errno);
         /* Avoid waiting for the signal */
         pthread_mutex_unlock(&poll_cb->mutex);
@@ -143,7 +143,7 @@ static int32_t mm_camera_poll_sig(mm_camera_poll_thread_t *poll_cb,
 
     ssize_t len = write(poll_cb->pfds[1], &cmd_evt, sizeof(cmd_evt));
     if(len < 1) {
-        LOGE("len = %lld, errno = %d",
+        LOGW("len = %lld, errno = %d",
                 (long long int)len, errno);
         /* Avoid waiting for the signal */
         pthread_mutex_unlock(&poll_cb->mutex);
@@ -435,8 +435,7 @@ int32_t mm_camera_poll_thread_add_poll_fd(mm_camera_poll_thread_t * poll_cb,
             rc = mm_camera_poll_sig_async(poll_cb, MM_CAMERA_PIPE_CMD_POLL_ENTRIES_UPDATED_ASYNC );
         }
     } else {
-        LOGE("invalid handler %d (%d)",
-                    handler, idx);
+        LOGE("invalid handler %d (%d)", handler, idx);
     }
     return rc;
 }
@@ -484,11 +483,15 @@ int32_t mm_camera_poll_thread_del_poll_fd(mm_camera_poll_thread_t * poll_cb,
             rc = mm_camera_poll_sig_async(poll_cb, MM_CAMERA_PIPE_CMD_POLL_ENTRIES_UPDATED_ASYNC );
         }
     } else {
-        /* The error might be due to async update. We only report error for EVT type*/
-        if (MM_CAMERA_POLL_TYPE_DATA != poll_cb->poll_type)
-            LOGE("invalid handler %d (%d)", handler, idx);
-
-        return -1;
+        if ((MAX_STREAM_NUM_IN_BUNDLE <= idx) ||
+                (poll_cb->poll_entries[idx].handler != 0)) {
+            LOGE("invalid handler %d (%d)", poll_cb->poll_entries[idx].handler,
+                    idx);
+            rc = -1;
+        } else {
+            LOGW("invalid handler %d (%d)", handler, idx);
+            rc = 0;
+        }
     }
 
     return rc;
@@ -500,6 +503,7 @@ int32_t mm_camera_poll_thread_launch(mm_camera_poll_thread_t * poll_cb,
     int32_t rc = 0;
     size_t i = 0, cnt = 0;
     poll_cb->poll_type = poll_type;
+    pthread_condattr_t cond_attr;
 
     //Initialize poll_fds
     cnt = sizeof(poll_cb->poll_fds) / sizeof(poll_cb->poll_fds[0]);
@@ -526,8 +530,12 @@ int32_t mm_camera_poll_thread_launch(mm_camera_poll_thread_t * poll_cb,
          poll_cb->poll_type,
         poll_cb->pfds[0], poll_cb->pfds[1],poll_cb->timeoutms);
 
+    pthread_condattr_init(&cond_attr);
+    pthread_condattr_setclock(&cond_attr, CLOCK_MONOTONIC);
+
     pthread_mutex_init(&poll_cb->mutex, NULL);
-    pthread_cond_init(&poll_cb->cond_v, NULL);
+    pthread_cond_init(&poll_cb->cond_v, &cond_attr);
+    pthread_condattr_destroy(&cond_attr);
 
     /* launch the thread */
     pthread_mutex_lock(&poll_cb->mutex);
@@ -554,7 +562,7 @@ int32_t mm_camera_poll_thread_release(mm_camera_poll_thread_t *poll_cb)
     mm_camera_poll_sig(poll_cb, MM_CAMERA_PIPE_CMD_EXIT);
     /* wait until poll thread exits */
     if (pthread_join(poll_cb->pid, NULL) != 0) {
-        LOGE("pthread dead already\n");
+        LOGD("pthread dead already\n");
     }
 
     /* close pipe */
