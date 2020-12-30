@@ -1,4 +1,4 @@
-/* Copyright (c) 2015-2016, The Linux Foundation. All rights reserved.
+/* Copyright (c) 2015-2018, The Linux Foundation. All rights reserved.
 *
 * Redistribution and use in source and binary forms, with or without
 * modification, are permitted provided that the following conditions are
@@ -29,23 +29,37 @@
 
 #define LOG_TAG "QCameraDisplay"
 
-// To remove
-#include <cutils/properties.h>
-
 // Camera dependencies
-#include "QCamera2HWI.h"
-#include "QCameraDisplay.h"
-
+#include <properties.h>
 extern "C" {
 #include "mm_camera_dbg.h"
 }
+#include "QCameraDisplay.h"
 
 #define CAMERA_VSYNC_WAIT_MS               33 // Used by vsync thread to wait for vsync timeout.
 #define DISPLAY_EVENT_RECEIVER_ARRAY_SIZE  1
 #define DISPLAY_DEFAULT_FPS                60
 
+#ifdef USE_DISPLAY_SERVICE
+using ::android::frameworks::displayservice::V1_0::IDisplayEventReceiver;
+using ::android::frameworks::displayservice::V1_0::IDisplayService;
+using ::android::frameworks::displayservice::V1_0::IEventCallback;
+using ::android::frameworks::displayservice::V1_0::Status;
+using ::android::hardware::Return;
+using ::android::hardware::Void;
+using ::android::sp;
+#else //USE_DISPLAY_SERVICE
+#include <utils/Errors.h>
+#include <utils/Looper.h>
+using ::android::status_t;
+using ::android::NO_ERROR;
+using ::android::Looper;
+#define ALOOPER_EVENT_INPUT android::Looper::EVENT_INPUT
+#endif //USE_DISPLAY_SERVICE
+
 namespace qcamera {
 
+#ifndef USE_DISPLAY_SERVICE
 /*===========================================================================
  * FUNCTION   : vsyncEventReceiverCamera
  *
@@ -68,7 +82,7 @@ int QCameraDisplay::vsyncEventReceiverCamera(__unused int fd,
     while ((n = pQCameraDisplay->mDisplayEventReceiver.getEvents(buffer,
             DISPLAY_EVENT_RECEIVER_ARRAY_SIZE)) > 0) {
         for (int i = 0 ; i < n ; i++) {
-            if (buffer[i].header.type == DisplayEventReceiver::DISPLAY_EVENT_VSYNC) {
+            if (buffer[i].header.type == android::DisplayEventReceiver::DISPLAY_EVENT_VSYNC) {
                 pQCameraDisplay->computeAverageVsyncInterval(buffer[i].header.timestamp);
             }
         }
@@ -95,7 +109,7 @@ void* QCameraDisplay::vsyncThreadCamera(void * data)
     looper = new android::Looper(false);
     status_t status = pQCameraDisplay->mDisplayEventReceiver.initCheck();
     if (status != NO_ERROR) {
-        ALOGE("Initialization of DisplayEventReceiver failed with status: %d", status);
+        LOGE("Initialization of DisplayEventReceiver failed with status: %d", status);
         return NULL;
     }
     looper->addFd(pQCameraDisplay->mDisplayEventReceiver.getFd(), 0, ALOOPER_EVENT_INPUT,
@@ -107,9 +121,10 @@ void* QCameraDisplay::vsyncThreadCamera(void * data)
     }
     return NULL;
 }
+#endif //USE_DISPLAY_SERVICE
 
 /*===========================================================================
- * FUNCTION   : ~QCameraDisplay
+ * FUNCTION   : QCameraDisplay
  *
  * DESCRIPTION: constructor of QCameraDisplay
  *
@@ -123,29 +138,39 @@ QCameraDisplay::QCameraDisplay()
       mOldTimeStamp(0),
       mVsyncHistoryIndex(0),
       mAdditionalVsyncOffsetForWiggle(0),
-      mThreadExit(0),
       mNum_vsync_from_vfe_isr_to_presentation_timestamp(0),
-      mSet_timestamp_num_ms_prior_to_vsync(0),
-      mVfe_and_mdp_freq_wiggle_filter_max_ms(0),
-      mVfe_and_mdp_freq_wiggle_filter_min_ms(0)
+      mSet_timestamp_num_ns_prior_to_vsync(0),
+      mVfe_and_mdp_freq_wiggle_filter_max_ns(0),
+      mVfe_and_mdp_freq_wiggle_filter_min_ns(0),
+#ifndef USE_DISPLAY_SERVICE
+      mThreadExit(0)
+#else //USE_DISPLAY_SERVICE
+      m_bInitDone(false),
+      m_bSyncing(false)
+#endif //USE_DISPLAY_SERVICE
 {
+#ifdef USE_DISPLAY_SERVICE
+    mDisplayService = nullptr;
+    mDisplayEventReceiver = nullptr;
+#else //USE_DISPLAY_SERVICE
     int rc = NO_ERROR;
 
     memset(&mVsyncIntervalHistory, 0, sizeof(mVsyncIntervalHistory));
     rc = pthread_create(&mVsyncThreadCameraHandle, NULL, vsyncThreadCamera, (void *)this);
     if (rc == NO_ERROR) {
-        char    value[PROPERTY_VALUE_MAX];
+        pthread_setname_np(mVsyncThreadCameraHandle, "CAM_Vsync");
+#endif //USE_DISPLAY_SERVICE
+        char  value[PROPERTY_VALUE_MAX];
         nsecs_t default_vsync_interval;
-        pthread_setname_np(mVsyncThreadCameraHandle, "CAM_Vsync_Thread");
         // Read a list of properties used for tuning
         property_get("persist.camera.disp.num_vsync", value, "4");
         mNum_vsync_from_vfe_isr_to_presentation_timestamp = atoi(value);
         property_get("persist.camera.disp.ms_to_vsync", value, "2");
-        mSet_timestamp_num_ms_prior_to_vsync = atoi(value);
+        mSet_timestamp_num_ns_prior_to_vsync = atoi(value) * NSEC_PER_MSEC;
         property_get("persist.camera.disp.filter_max", value, "2");
-        mVfe_and_mdp_freq_wiggle_filter_max_ms = atoi(value);
+        mVfe_and_mdp_freq_wiggle_filter_max_ns = atoi(value) * NSEC_PER_MSEC;
         property_get("persist.camera.disp.filter_min", value, "4");
-        mVfe_and_mdp_freq_wiggle_filter_min_ms = atoi(value);
+        mVfe_and_mdp_freq_wiggle_filter_min_ns = atoi(value) * NSEC_PER_MSEC;
         property_get("persist.camera.disp.fps", value, "60");
         if (atoi(value) > 0) {
             default_vsync_interval= s2ns(1) / atoi(value);
@@ -156,16 +181,18 @@ QCameraDisplay::QCameraDisplay()
             mVsyncIntervalHistory[i] = default_vsync_interval;
         }
         LOGD("display jitter num_vsync_from_vfe_isr_to_presentation_timestamp %u \
-                set_timestamp_num_ms_prior_to_vsync %u",
+                set_timestamp_num_ns_prior_to_vsync %llu",
                 mNum_vsync_from_vfe_isr_to_presentation_timestamp,
-                mSet_timestamp_num_ms_prior_to_vsync);
-        LOGD("display jitter vfe_and_mdp_freq_wiggle_filter_max_ms %u \
-                vfe_and_mdp_freq_wiggle_filter_min_ms %u",
-                mVfe_and_mdp_freq_wiggle_filter_max_ms,
-                mVfe_and_mdp_freq_wiggle_filter_min_ms);
-    } else {
-        mVsyncThreadCameraHandle = 0;
-    }
+                mSet_timestamp_num_ns_prior_to_vsync);
+        LOGD("display jitter vfe_and_mdp_freq_wiggle_filter_max_ns %llu \
+                vfe_and_mdp_freq_wiggle_filter_min_ns %llu",
+                mVfe_and_mdp_freq_wiggle_filter_max_ns,
+                mVfe_and_mdp_freq_wiggle_filter_min_ns);
+#ifndef USE_DISPLAY_SERVICE
+      } else {
+          mVsyncThreadCameraHandle = 0;
+      }
+#endif //USE_DISPLAY_SERVICE
 }
 
 /*===========================================================================
@@ -179,11 +206,98 @@ QCameraDisplay::QCameraDisplay()
  *==========================================================================*/
 QCameraDisplay::~QCameraDisplay()
 {
+#ifndef USE_DISPLAY_SERVICE
     mThreadExit = 1;
     if (mVsyncThreadCameraHandle != 0) {
         pthread_join(mVsyncThreadCameraHandle, NULL);
     }
+#endif //USE_DISPLAY_SERVICE
 }
+
+#ifdef USE_DISPLAY_SERVICE
+/*===========================================================================
+ * FUNCTION   : init
+ *
+ * DESCRIPTION: Get the display service and register for the callback. OnVsync
+ *              and onHotPlug callback will we called based on setVsyncRate
+ *              parameter. Check isInitDone to see if init is success or not.
+ *
+ * PARAMETERS : none
+ *
+ * RETURN     : none.
+ *==========================================================================*/
+void
+QCameraDisplay::init()
+{
+    //get the display service and register for Event receiver.
+    mDisplayService = android::frameworks::displayservice::V1_0::IDisplayService::getService();
+    if(mDisplayService == nullptr)
+    {
+        LOGE("Camera failed to get Displayservice for vsync.");
+        return;
+    }
+
+    Return<sp<IDisplayEventReceiver>> ret = mDisplayService->getEventReceiver();
+    mDisplayEventReceiver = ret;
+    if(!ret.isOk() || (mDisplayEventReceiver == nullptr))
+    {
+      LOGE("Failed to get display event receiver");
+      return;
+    }
+
+    m_bInitDone = true;
+
+}
+
+/*===========================================================================
+ * FUNCTION   : startVsync
+ *
+ * DESCRIPTION: Start or stop the onVsync or onHotPlug callback.
+ *
+ * PARAMETERS : true to start callback or false to stop callback
+ *
+ * RETURN     : true in success, false in error case.
+ *==========================================================================*/
+bool
+QCameraDisplay::startVsync(bool bStart)
+{
+    if(!m_bInitDone || mDisplayEventReceiver == nullptr)
+    {
+        LOGE("ERROR: Display event callbacks is not registered");
+        return false;
+    }
+
+    if(bStart)
+    {
+        Return<Status> retVal = mDisplayEventReceiver->init(this /*setting callbacks*/ );
+        if(!retVal.isOk() || (Status::SUCCESS != static_cast<Status>(retVal)) )
+        {
+            LOGE("Failed to register display vsync callback");
+            return false;
+        }
+
+        retVal = mDisplayEventReceiver->setVsyncRate(1 /*send callback after this many events*/);
+        if(!retVal.isOk() || (Status::SUCCESS != static_cast<Status>(retVal)) )
+        {
+            LOGE("Failed to start vsync events");
+            return false;
+        }
+    }
+    else
+    {
+        Return<Status> retVal = mDisplayEventReceiver->setVsyncRate(0 /*send callback after this many events*/);
+        if(!retVal.isOk() || (Status::SUCCESS != static_cast<Status>(retVal)) )
+        {
+            LOGE("Failed to stop vsync events");
+            return false;
+        }
+    }
+    LOGI("Display sync event %s", (bStart)?"started":"stopped");
+
+    m_bSyncing = (bStart)?true:false;
+    return true; //sync rate is set
+}
+#endif //USE_DISPLAY_SERVICE
 
 /*===========================================================================
  * FUNCTION   : computeAverageVsyncInterval
@@ -244,7 +358,12 @@ nsecs_t QCameraDisplay::computePresentationTimeStamp(nsecs_t frameTimeStamp)
     nsecs_t presentationTimeStamp = 0;
     int     expectedVsyncOffset   = 0;
     int     vsyncOffset;
-
+#ifdef USE_DISPLAY_SERVICE
+    if(!isSyncing())
+    {
+       return 0;
+    }
+#endif //USE_DISPLAY_SERVICE
     if ( (mAvgVsyncInterval != 0) && (mVsyncTimeStamp != 0) ) {
         // Compute presentation time stamp in future as per the following formula
         // future time stamp = vfe time stamp +  N *  average vsync interval
@@ -256,11 +375,11 @@ nsecs_t QCameraDisplay::computePresentationTimeStamp(nsecs_t frameTimeStamp)
                 (mNum_vsync_from_vfe_isr_to_presentation_timestamp * mAvgVsyncInterval);
         if (presentationTimeStamp > mVsyncTimeStamp) {
             timeDifference      = presentationTimeStamp - mVsyncTimeStamp;
-            moveToNextVsync     = mAvgVsyncInterval - mVfe_and_mdp_freq_wiggle_filter_min_ms;
-            keepInCurrentVsync  = mAvgVsyncInterval - mVfe_and_mdp_freq_wiggle_filter_max_ms;
+            moveToNextVsync     = mAvgVsyncInterval - mVfe_and_mdp_freq_wiggle_filter_min_ns;
+            keepInCurrentVsync  = mAvgVsyncInterval - mVfe_and_mdp_freq_wiggle_filter_max_ns;
             vsyncOffset         = timeDifference % mAvgVsyncInterval;
             expectedVsyncOffset = mAvgVsyncInterval -
-                    mSet_timestamp_num_ms_prior_to_vsync - vsyncOffset;
+                    mSet_timestamp_num_ns_prior_to_vsync - vsyncOffset;
             if (vsyncOffset > moveToNextVsync) {
                 mAdditionalVsyncOffsetForWiggle = mAvgVsyncInterval;
             } else if (vsyncOffset < keepInCurrentVsync) {
