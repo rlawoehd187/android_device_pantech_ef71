@@ -130,8 +130,7 @@ PRODUCT_COPY_FILES += \
 # Camera
 PRODUCT_PACKAGES += \
     camera.device@3.2-impl \
-    camera.msm8937 \
-    libmm-qcamera \
+    libshim_camera \
     Snap
 
 PRODUCT_PACKAGES += \
