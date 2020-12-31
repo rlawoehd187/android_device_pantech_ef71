@@ -233,6 +233,10 @@ TARGET_RECOVERY_FSTAB := $(DEVICE_PATH)/rootdir/etc/recovery.qcom
     $(DEVICE_PATH)/sepolicy
 include device/qcom/sepolicy/sepolicy.mk
 
+# SHIMS
+TARGET_LD_SHIM_LIBS := \
+    /system/vendor/lib/hw/camera.msm8937.so|/system/lib/libshim_camera.so 
+
 # Time
 BOARD_USES_QC_TIME_SERVICES := true
 
