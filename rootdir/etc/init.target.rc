@@ -60,22 +60,15 @@ on post-fs-data
     mkdir /data/misc/camera 0770 camera camera
     mkdir /data/vendor/camera 0770 camera camera
 
-# redefine cameraserver to load shim
-service cameraserver /system/bin/cameraserver
-    class main
-    user cameraserver
-    group audio camera input drmrpc
-    ioprio rt 4
-    setenv LD_PRELOAD "libshim_cameraservice.so"
-    writepid /dev/cpuset/camera-daemon/tasks /dev/stune/top-app/tasks
-
 #start camera server as daemon
 service qcamerasvr /system/vendor/bin/mm-qcamera-daemon
     class late_start
     user camera
     group camera system inet input graphics
-    setenv LD_PRELOAD "libshim_pthreadts.so:libshim_mutexdestroy.so"
     writepid /dev/cpuset/camera-daemon/tasks
+
+on property:init.svc.qcamerasvr=running
+    restart media
 
 #enable zram
 on property:ro.config.zram=true

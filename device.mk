@@ -131,6 +131,7 @@ PRODUCT_COPY_FILES += \
 PRODUCT_PACKAGES += \
     camera.device@3.2-impl \
     libshim_camera \
+    libshim_camera_parameters \
     Snap
 
 PRODUCT_PACKAGES += \
@@ -240,7 +241,6 @@ PRODUCT_PACKAGES += \
 
 # Libshims
 PRODUCT_PACKAGES += \
-    libshim_cameraservice \
     libshim_mutexdestroy \
     libshim_pthreadts
 

@@ -119,7 +119,8 @@ BOARD_QTI_CAMERA_32BIT_ONLY := true
 TARGET_TS_MAKEUP := true
 TARGET_USES_QTI_CAMERA_DEVICE := true
 TARGET_PROCESS_SDK_VERSION_OVERRIDE := \
-    /vendor/bin/mm-qcamera-daemon=23
+    /system/bin/mediaserver=22 \
+    /system/vendor/bin/mm-qcamera-daemon=22
 
 # Charger
 BOARD_CHARGER_DISABLE_INIT_BLANK := true
@@ -236,8 +237,9 @@ include device/qcom/sepolicy/sepolicy.mk
 # SHIMS
 TARGET_LD_SHIM_LIBS := \
     /system/vendor/lib/hw/camera.msm8937.so|/system/lib/libshim_camera.so \
-    /vendor/bin/mm-qcamera-daemon|libshim_pthreadts.so \
-    /system/bin/cameraserver|libshim_cameraservice.so
+    /system/vendor/bin/mm-qcamera-daemon|libshim_pthreadts.so \
+    /system/vendor/bin/mm-qcamera-daemon|libshim_mutexdestroy.so \
+    /system/vendor/lib/hw/camera.msm8937.so|libshim_camera_parameters.so \
 
 # Time
 BOARD_USES_QC_TIME_SERVICES := true

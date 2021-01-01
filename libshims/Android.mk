@@ -57,13 +57,13 @@ LOCAL_MODULE_CLASS := SHARED_LIBRARIES
 include $(BUILD_SHARED_LIBRARY)
 
 include $(CLEAR_VARS)
-LOCAL_SRC_FILES := \
-    camera_parameters.cpp
-LOCAL_C_INCLUDES := \
-    $(TOP)/frameworks/av/services/camera/libcameraservice
-LOCAL_SHARED_LIBRARIES := libcameraservice
-LOCAL_MODULE := libshim_cameraservice
-LOCAL_VENDOR_MODULE := true
-LOCAL_MODULE_TAGS := optional
+
+LOCAL_SRC_FILES := CameraParameters.cpp
+
+LOCAL_MODULE := libshim_camera_parameters
 LOCAL_MODULE_CLASS := SHARED_LIBRARIES
+LOCAL_MODULE_TAGS := optional
+LOCAL_PROPRIETARY_MODULE := true
+LOCAL_32_BIT_ONLY := true
+
 include $(BUILD_SHARED_LIBRARY)
