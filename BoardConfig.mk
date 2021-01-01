@@ -115,9 +115,9 @@ QCOM_BT_USE_SMD_TTY := true
 
 # Camera
 USE_DEVICE_SPECIFIC_CAMERA := true
-BOARD_QTI_CAMERA_32BIT_ONLY := true
-TARGET_TS_MAKEUP := true
-TARGET_USES_QTI_CAMERA_DEVICE := true
+USE_CAMERA_STUB := true
+TARGET_PROVIDES_CAMERA_HAL := true
+TARGET_NEEDS_PLATFORM_TEXT_RELOCATIONS := true
 TARGET_PROCESS_SDK_VERSION_OVERRIDE := \
     /system/bin/mediaserver=22 \
     /system/vendor/bin/mm-qcamera-daemon=22
@@ -238,8 +238,7 @@ include device/qcom/sepolicy/sepolicy.mk
 TARGET_LD_SHIM_LIBS := \
     /system/vendor/lib/hw/camera.msm8937.so|/system/lib/libshim_camera.so \
     /system/vendor/bin/mm-qcamera-daemon|libshim_pthreadts.so \
-    /system/vendor/bin/mm-qcamera-daemon|libshim_mutexdestroy.so \
-    /system/vendor/lib/hw/camera.msm8937.so|libshim_camera_parameters.so \
+    /system/vendor/bin/mm-qcamera-daemon|libshim_mutexdestroy.so
 
 # Time
 BOARD_USES_QC_TIME_SERVICES := true

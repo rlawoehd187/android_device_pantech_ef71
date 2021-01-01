@@ -62,7 +62,7 @@ on post-fs-data
 
 #start camera server as daemon
 service qcamerasvr /system/vendor/bin/mm-qcamera-daemon
-    class late_start
+    class main
     user camera
     group camera system inet input graphics
     writepid /dev/cpuset/camera-daemon/tasks
@@ -103,6 +103,7 @@ service qrngp /system/bin/qrngp -f
    disabled
 
 on property:sys.boot_completed=1
+    restart cameraserver
    start qrngp
 
 service qseecomd /vendor/bin/qseecomd

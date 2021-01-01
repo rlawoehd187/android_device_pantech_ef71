@@ -129,14 +129,10 @@ PRODUCT_COPY_FILES += \
 
 # Camera
 PRODUCT_PACKAGES += \
-    camera.device@3.2-impl \
-    libshim_camera \
-    libshim_camera_parameters \
-    Snap
-
-PRODUCT_PACKAGES += \
     android.hardware.camera.provider@2.4-impl \
-    android.hardware.camera.provider@2.4-service
+    android.hardware.camera.provider@2.4-service \
+    camera.device@3.2-impl \
+    libshim_camera
 
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/configs/camera/imx214_chromatix.xml:system/etc/camera/imx214_chromatix.xml \
