@@ -255,5 +255,8 @@ WIFI_DRIVER_FW_PATH_STA          := "sta"
 WPA_SUPPLICANT_VERSION           := VER_0_8_X
 PRODUCT_VENDOR_MOVE_ENABLED      := true
 
+# Vendor Security Patch
+VENDOR_SECURITY_PATCH := 2019-05-01
+
 # Inherit the proprietary files
 -include vendor/pantech/ef71/BoardConfigVendor.mk
