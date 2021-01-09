@@ -394,19 +394,15 @@ PRODUCT_COPY_FILES += \
 
 # WiFi HAL
 PRODUCT_PACKAGES += \
-    android.hardware.wifi@1.0-service
-
-# Wi-Fi
-PRODUCT_PACKAGES += \
+    android.hardware.wifi@1.0-service \
+    libcld80211 \
     hostapd \
     libqsap_sdk \
     libQWiFiSoftApCfg \
     wificond \
-    wifilogd \
     libwpa_client \
     wpa_supplicant \
-    wpa_supplicant.conf \
-    wcnss_service
+    wpa_supplicant.conf
 
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/wifi/hostapd.accept:system/etc/hostapd/hostapd.accept \
