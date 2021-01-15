@@ -129,13 +129,19 @@ PRODUCT_COPY_FILES += \
 
 # Camera
 PRODUCT_PACKAGES += \
+    camera.device@1.0-impl \
     camera.device@3.2-impl \
-    libshim_camera \
-    Snap
+    android.hardware.camera.provider@2.4-impl \
+    android.hardware.camera.provider@2.4-service \
+    vendor.qti.hardware.camera.device@1.0 \
+    vendor.qti.hardware.camera.device@1.0_vendor \
+    GCam
 
 PRODUCT_PACKAGES += \
-    android.hardware.camera.provider@2.4-impl \
-    android.hardware.camera.provider@2.4-service
+    libshim_cameraclient \
+    libshim_mutexdestroy \
+    libshim_camera \
+    libshim_pthreadts
 
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/configs/camera/imx214_chromatix.xml:system/etc/camera/imx214_chromatix.xml \
@@ -236,12 +242,6 @@ PRODUCT_COPY_FILES += \
 PRODUCT_PACKAGES += \
     android.hardware.keymaster@3.0-impl \
     android.hardware.keymaster@3.0-service
-
-# Libshims
-PRODUCT_PACKAGES += \
-    libshim_cameraservice \
-    libshim_mutexdestroy \
-    libshim_pthreadts
 
 # Lights
 PRODUCT_PACKAGES += \
