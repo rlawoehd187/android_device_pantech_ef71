@@ -1,11 +1,11 @@
-# configure.ac -- Autoconf script for gps gps-utils
+# configure.ac -- Autoconf script for gps loc-stub
 #
 # Process this file with autoconf to produce a configure script
 
 # Requires autoconf tool later than 2.61
 AC_PREREQ(2.61)
-# Initialize the gps gps-utils package version 1.0.0
-AC_INIT([gps-utils],1.0.0)
+# Initialize the gps loc-stub package version 1.0.0
+AC_INIT([loc-stub],1.0.0)
 # Does not strictly follow GNU Coding standards
 AM_INIT_AUTOMAKE([foreign])
 # Disables auto rebuilding of configure, Makefile.ins
@@ -28,9 +28,16 @@ AC_PROG_LN_S
 AC_PROG_MAKE_SET
 PKG_PROG_PKG_CONFIG
 
-PKG_CHECK_MODULES([LOCPLA], [loc-pla])
-AC_SUBST([LOCPLA_CFLAGS])
-AC_SUBST([LOCPLA_LIBS])
+# Checks for libraries.
+AC_ARG_WITH([hardware_include],
+                  AC_HELP_STRING([--with-hardware-include=@<:@dir@:>@],
+                                 [Specify the location of the hardware headers]),
+                                 [hardware_incdir=$withval],
+                                 with_hardware_include=no)
+
+if test "x$with_hardware_include" != "xno"; then
+       CPPFLAGS="${CPPFLAGS} -I${hardware_incdir}"
+fi
 
 AC_ARG_WITH([glib],
       AC_HELP_STRING([--with-glib],
@@ -53,7 +60,8 @@ AM_CONDITIONAL(USE_GLIB, test "x${with_glib}" = "xyes")
 
 AC_CONFIG_FILES([ \
         Makefile \
-        gps-utils.pc
+        src/Makefile \
+        loc-stub.pc
         ])
 
 AC_OUTPUT
