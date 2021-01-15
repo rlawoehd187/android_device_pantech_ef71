@@ -295,9 +295,9 @@ vendor/lib/hw/vendor.qti.esepowermanager@1.0-impl.so
 vendor/lib64/vendor.qti.esepowermanager@1.0_vendor.so
 vendor/lib64/hw/vendor.qti.esepowermanager@1.0-impl.so
 
-# Gatekeeper
-vendor/lib/hw/gatekeeper.msm8937.so
-vendor/lib64/hw/gatekeeper.msm8937.so
+# Gatekeeper - from TA-1024
+vendor/lib/hw/gatekeeper.msm8937.so:vendor/lib/hw/gatekeeper.msm8937.so
+vendor/lib64/hw/gatekeeper.msm8937.so:vendor/lib64/hw/gatekeeper.msm8937.so
 
 # GPS
 vendor/bin/hw/vendor.qti.gnss@1.0-service
@@ -742,7 +742,6 @@ vendor/lib64/vendor.qti.ims.callinfo@1.0.so
 vendor/lib64/vendor.qti.imsrtpservice@1.0-service-Impl.so
 vendor/lib64/vendor.qti.imsrtpservice@1.0.so
 
-
 # Sensors
 vendor/bin/sensors.qcom
 vendor/lib/hw/activity_recognition.msm8937.so
@@ -780,9 +779,6 @@ vendor/lib64/vendor.qti.hardware.tui_comm@1.0.so
 
 # USB
 etc/firmware/ice40.bin
-
-# Widevine
-vendor/lib/mediadrm/libwvdrmengine.so
 
 # Wi-Fi
 vendor/bin/wcnss_service
