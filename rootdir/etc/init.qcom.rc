@@ -726,15 +726,10 @@ service vendor.dataqti /system/vendor/bin/qti
     user radio
     group radio oem_2901 diag usb net_admin
 
-service vendor.sensors /vendor/bin/sscrpcd
+service sensors /vendor/bin/sensors.qcom
     class core
-    user system
-    group system
-
-service vendor.sensors.qti /vendor/bin/sensors.qti
-    class core
-    user system
-    group system
+    user root
+    group root
 
 service qvop-daemon /vendor/bin/qvop-daemon
     class late_start
