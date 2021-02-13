@@ -213,9 +213,9 @@ vendor/lib/mediadrm/libwvdrmengine.so
 vendor/lib64/libwvhidl.so
 vendor/lib64/mediadrm/libwvdrmengine.so
 
-# Gatekeeper - from TA-1024
-vendor/lib/hw/gatekeeper.msm8937.so:vendor/lib/hw/gatekeeper.msm8937.so
-vendor/lib64/hw/gatekeeper.msm8937.so:vendor/lib64/hw/gatekeeper.msm8937.so
+# Gatekeeper - from olive - QKQ1.191014.001
+vendor/lib/hw/gatekeeper.msm8937.so
+vendor/lib64/hw/gatekeeper.msm8937.so
 
 # GPS
 vendor/bin/hw/vendor.qti.gnss@1.0-service
@@ -329,11 +329,11 @@ vendor/firmware/a530v2_seq.fw2
 vendor/firmware/a530v3_gpmu.fw2
 vendor/firmware/a530v3_seq.fw2
 
-# Keystore - from TA-1024
-vendor/lib/hw/keystore.msm8937.so:vendor/lib/hw/keystore.msm8937.so
-vendor/lib64/hw/keystore.msm8937.so:vendor/lib64/hw/keystore.msm8937.so
+# Keystore - from olive - QKQ1.191014.001
+vendor/lib/hw/keystore.msm8937.so
+vendor/lib64/hw/keystore.msm8937.so
 
-# Keymaster - from TA-1024
+# Keymaster - from olive - QKQ1.191014.001
 vendor/lib/libkeymasterutils.so
 vendor/lib/libkeymasterprovision.so
 vendor/lib/libkeymasterdeviceutils.so
@@ -652,9 +652,7 @@ vendor/bin/time_daemon
 -vendor/lib/libtime_genoff.so
 -vendor/lib64/libtime_genoff.so
 
-# TUI - from TA-1024
-lib/vendor.qti.hardware.tui_comm@1.0.so
-lib64/vendor.qti.hardware.tui_comm@1.0.so
+# TUI - from olive - QKQ1.191014.001
 vendor/bin/hw/vendor.qti.hardware.tui_comm@1.0-service-qti
 vendor/etc/init/vendor.qti.hardware.tui_comm@1.0-service-qti.rc
 vendor/lib/vendor.qti.hardware.tui_comm@1.0.so
