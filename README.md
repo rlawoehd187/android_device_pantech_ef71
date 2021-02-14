@@ -20,7 +20,7 @@
 
 ## Device Picture
 
-![SKY IM-100](https://raw.githubusercontent.com/rlawoehd187/device_images/main/IM-100.jpeg)
+![picture](https://github.com/rlawoehd187/device_images/blob/main/IM-100.jpeg?raw=true)
 
 ## Copyright
 
