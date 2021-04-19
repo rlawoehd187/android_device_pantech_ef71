@@ -1,4 +1,7 @@
-#System prop for IM-100S/K
+
+#
+# System prop for IM-100S/K
+#
 
 # Audio
 af.fast_track_multiplier=1
@@ -38,7 +41,7 @@ vendor.voice.voip.conc.disabled=true
 
 # Bluetooth
 bluetooth.hfp.client=1
-ro.bluetooth.hfp.ver=1.7 
+ro.bluetooth.hfp.ver=1.7
 ro.qualcomm.bt.hci_transport=smd
 persist.vendor.bt.enable.splita2dp=false
 qcom.bluetooth.soc=smd
@@ -201,6 +204,6 @@ sys.use_fifo_ui=1
 
 # USB
 ro.default_usb_mode=0
-persist.service.adb.enable=1                                                    
+persist.service.adb.enable=1
 persist.service.debuggable=1
 persist.sys.usb.config=mtp,adb
