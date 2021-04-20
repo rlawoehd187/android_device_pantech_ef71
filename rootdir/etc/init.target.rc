@@ -45,6 +45,10 @@ on fs
 
     chmod 0755 /sys/kernel/debug/tracing
 
+    symlink /persist /mnt/vendor/persist 
+    chmod 0771 /mnt/vendor/persist
+    chown system system /mnt/vendor/persist
+
 on post-fs-data
     mkdir /data/tombstones 0771 system system
     mkdir /tombstones/modem 0771 system system
