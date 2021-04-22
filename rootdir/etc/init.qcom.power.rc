@@ -168,6 +168,10 @@ on enable-low-power
     write /proc/sys/kernel/sched_downmigrate 83
     write /proc/sys/kernel/sched_boost 0
 
+    # input boost configuration
+    write /sys/module/cpu_boost/parameters/input_boost_freq "0:1209600 4:1094400 5:1094400"
+    write /sys/module/cpu_boost/parameters/input_boost_ms 40
+
     # Enable sched guided freq control
     write /sys/devices/system/cpu/cpu0/cpufreq/interactive/use_sched_load 1
     write /sys/devices/system/cpu/cpu0/cpufreq/interactive/use_migration_notif 1
