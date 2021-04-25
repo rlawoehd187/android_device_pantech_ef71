@@ -19,9 +19,9 @@ on boot
     chown cameraserver cameraserver /dev/cpuset/camera-daemon/tasks
     chmod 0660 /dev/cpuset/camera-daemon/tasks
 
-    # Switch one core to interactive to set permissions, for power hal and system server.
-    write /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor "interactive"
-    write /sys/devices/system/cpu/cpu4/cpufreq/scaling_governor "interactive"
+    # Switch one core to darkness to set permissions, for power hal and system server.
+    write /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor "darkness"
+    write /sys/devices/system/cpu/cpu4/cpufreq/scaling_governor "darkness"
     chown system system /dev/cpuctl/cpu.notify_on_migrate
     chmod 0660 /dev/cpuctl/cpu.notify_on_migrate
     chown root system /sys/devices/system/cpu/cpu1/online
@@ -71,29 +71,11 @@ on enable-low-power
 
     #  configure governor settings for little cluster
     write /sys/devices/system/cpu/cpu0/online 1
-    write /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor interactive
-    write /sys/devices/system/cpu/cpu0/cpufreq/interactive/above_hispeed_delay "19000 1094400:39000"
-    write /sys/devices/system/cpu/cpu0/cpufreq/interactive/go_hispeed_load 85
-    write /sys/devices/system/cpu/cpu0/cpufreq/interactive/timer_rate 20000
-    write /sys/devices/system/cpu/cpu0/cpufreq/interactive/hispeed_freq 1094400
-    write /sys/devices/system/cpu/cpu0/cpufreq/interactive/io_is_busy 0
-    write /sys/devices/system/cpu/cpu0/cpufreq/interactive/target_loads "1 960000:85 1094400:90 1344000:80"
-    write /sys/devices/system/cpu/cpu0/cpufreq/interactive/min_sample_time 40000
-    write /sys/devices/system/cpu/cpu0/cpufreq/interactive/sampling_down_factor 40000
-    write /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq 960000
+    write /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor darkness
 
     # configure governor settings for big cluster
     write /sys/devices/system/cpu/cpu4/online 1
-    write /sys/devices/system/cpu/cpu4/cpufreq/scaling_governor interactive
-    write /sys/devices/system/cpu/cpu4/cpufreq/interactive/above_hispeed_delay 39000
-    write /sys/devices/system/cpu/cpu4/cpufreq/interactive/go_hispeed_load 90
-    write /sys/devices/system/cpu/cpu4/cpufreq/interactive/timer_rate 20000
-    write /sys/devices/system/cpu/cpu4/cpufreq/interactive/hispeed_freq 768000
-    write /sys/devices/system/cpu/cpu4/cpufreq/interactive/io_is_busy 0
-    write /sys/devices/system/cpu/cpu4/cpufreq/interactive/target_loads "1 768000:90"
-    write /sys/devices/system/cpu/cpu4/cpufreq/interactive/min_sample_time 40000
-    write /sys/devices/system/cpu/cpu4/cpufreq/interactive/sampling_down_factor 40000
-    write /sys/devices/system/cpu/cpu4/cpufreq/scaling_min_freq 768000
+    write /sys/devices/system/cpu/cpu4/cpufreq/scaling_governor darkness
 
     # HMP Task packing settings
     write /sys/devices/system/cpu/cpu0/sched_prefer_idle 0
@@ -170,7 +152,7 @@ on enable-low-power
 
     # input boost configuration
     write /sys/module/cpu_boost/parameters/input_boost_freq "0:1209600 4:1094400 5:1094400"
-    write /sys/module/cpu_boost/parameters/input_boost_ms 40
+    write /sys/module/cpu_boost/parameters/input_boost_ms 60
 
     # Enable sched guided freq control
     write /sys/devices/system/cpu/cpu0/cpufreq/interactive/use_sched_load 1
