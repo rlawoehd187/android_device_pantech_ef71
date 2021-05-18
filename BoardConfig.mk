@@ -17,6 +17,8 @@
 
 DEVICE_PATH := device/pantech/ef71
 
+BUILD_BROKEN_DUP_RULES := true
+
 # Architecture
 TARGET_ARCH := arm64
 TARGET_ARCH_VARIANT := armv8-a
@@ -230,7 +232,7 @@ TARGET_RIL_VARIANT := caf
 TARGET_RECOVERY_FSTAB := $(DEVICE_PATH)/rootdir/etc/recovery.qcom
 
 # SELinux
-#BOARD_SEPOLICY_DIRS += \
+BOARD_SEPOLICY_DIRS += \
     $(DEVICE_PATH)/sepolicy
 include device/qcom/sepolicy-legacy-um/sepolicy.mk
 
