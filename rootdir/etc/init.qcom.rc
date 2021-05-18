@@ -654,11 +654,6 @@ service vendor.cnd /system/vendor/bin/cnd
     user system
     group system wifi inet radio wakelock net_admin
 
-service dpmQmiMgr /vendor/bin/dpmQmiMgr
-    class main
-    user system
-    group system
-
 service dpmQmiMgr /system/vendor/bin/dpmQmiMgr
     class main
     user system
@@ -857,11 +852,6 @@ service qcom-sh /vendor/bin/init.qcom.sh
 
 service sensor-sh /vendor/bin/init.qcom.sensors.sh
     class core
-    user root
-    oneshot
-
-service loggy /system/bin/sh  /vendor/etc/init/hw/loggy.sh
-    class main
     user root
     oneshot
 
