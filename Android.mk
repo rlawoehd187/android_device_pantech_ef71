@@ -75,6 +75,34 @@ $(IMS_SYMLINKS): $(LOCAL_INSTALLED_MODULE)
 
 ALL_DEFAULT_INSTALLED_MODULES += $(IMS_SYMLINKS)
 
+ADSP_IMAGES := \
+    adsp.b00 adsp.b01 adsp.b02 adsp.b03 \
+    adsp.b04 adsp.b05 adsp.b06 adsp.b07 \
+    adsp.b08 adsp.b08 adsp.b10 adsp.b11 \
+    adsp.b12 adsp.b13 adsp.mdt
+
+ADSP_SYMLINKS := $(addprefix $(TARGET_OUT_ETC)/firmware/,$(notdir $(ADSP_IMAGES)))
+$(ADSP_SYMLINKS): $(LOCAL_INSTALLED_MODULE)
+	@echo "adsp firmware link: $@"
+	@mkdir -p $(dir $@)
+	@rm -rf $@
+	$(hide) ln -sf /firmware/image/$(notdir $@) $@
+
+ALL_DEFAULT_INSTALLED_MODULES += $(ADSP_SYMLINKS)
+
+CPPF_IMAGES := \
+   cppf.b00 cppf.b01 cppf.b02 cppf.b03 \
+   cppf.b04 cppf.b05 cppf.b06 cppf.mdt
+
+CPPF_SYMLINKS := $(addprefix $(TARGET_OUT_VENDOR)/firmware/,$(notdir $(CPPF_IMAGES)))
+$(CPPF_SYMLINKS): $(LOCAL_INSTALLED_MODULE)
+	@echo "cppf firmware link: $@"
+	@mkdir -p $(dir $@)
+	@rm -rf $@
+	$(hide) ln -sf /firmware/image/$(notdir $@) $@
+
+ALL_DEFAULT_INSTALLED_MODULES += $(CPPF_SYMLINKS)
+
 RFS_MSM_ADSP_SYMLINKS := $(TARGET_OUT_VENDOR)/rfs/msm/adsp/
 $(RFS_MSM_ADSP_SYMLINKS): $(LOCAL_INSTALLED_MODULE)
 	@echo "Creating RFS MSM ADSP folder structure: $@"
