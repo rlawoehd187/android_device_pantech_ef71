@@ -45,10 +45,6 @@ on fs
 
     chmod 0755 /sys/kernel/debug/tracing
 
-    symlink /persist /mnt/vendor/persist 
-    chmod 0771 /mnt/vendor/persist
-    chown system system /mnt/vendor/persist
-
 on post-fs-data
     mkdir /data/tombstones 0771 system system
     mkdir /tombstones/modem 0771 system system
@@ -124,11 +120,6 @@ service vendor.qseecomd /vendor/bin/qseecomd
 #   user root
 #   disabled
 
-service perfd /vendor/bin/perfd
-   class main
-   user root
-   disabled
-
 service thermal-engine /system/vendor/bin/thermal-engine -c ${sys.qcom.thermalcfg:-/vendor/etc/thermal-engine.conf}
    class main
    user root
@@ -150,6 +141,7 @@ on boot
     chown system drmrpc /sys/devices/soc.0/78b7000.i2c/i2c-3/3-0020/input/input0/secure_touch
     chown system drmrpc /sys/devices/soc.0/78b8000.i2c/i2c-4/4-0020/input/input0/secure_touch_enable
     chown system drmrpc /sys/devices/soc.0/78b8000.i2c/i2c-4/4-0020/input/input0/secure_touch
+    chown system system /sys/kernel/hbtp/display_pwr
 
 service ppd /system/vendor/bin/mm-pp-dpps
     class late_start
