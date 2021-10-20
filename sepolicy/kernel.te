@@ -1,0 +1,2 @@
+allow kernel block_device:dir search;
+allow kernel tmpfs:dir search;
