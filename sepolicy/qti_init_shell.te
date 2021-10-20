@@ -2,5 +2,7 @@ allow qti_init_shell shell_exec:file { r_file_perms entrypoint };
 allow qti_init_shell toolbox_exec:file { r_file_perms execute_no_trans execute };
 allow qti_init_shell sysfs:file { rw_file_perms };
 allow qti_init_shell self:capability { dac_override };
+allow qti_init_shell vendor_radio_data_file:dir { search getattr setattr write read };
+allow qti_init_shell vendor_radio_data_file:file { write getattr open read };
 
 set_prop(qti_init_shell, ctl_default_prop)
