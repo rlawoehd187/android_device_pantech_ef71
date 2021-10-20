@@ -1,0 +1,2 @@
+allow mdtpdaemon system_data_file:fifo_file { read write open };
+allow mdtpdaemon servicemanager:binder { call transfer };
