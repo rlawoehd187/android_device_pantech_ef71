@@ -4,3 +4,4 @@ allow init system_server:fd use;
 allow init system_server:unix_stream_socket { read write };
 allow init adsprpcd_file:filesystem { mount relabelfrom relabelto };
 allow init sysfs:file setattr;
+allow init shell_exec:file execute_no_trans;
