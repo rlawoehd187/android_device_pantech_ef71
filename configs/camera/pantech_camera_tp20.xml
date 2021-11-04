@@ -91,6 +91,7 @@ F_PANTECH_CAMERA / ref msm8937_camera.xml
     <SensorName>imx214</SensorName>
     <ActuatorName>dw9763</ActuatorName>
     <EepromName>dw9763</EepromName>
+    <FlashName>pmic</FlashName>
     <ChromatixName>imx214_chromatix</ChromatixName>
     <ModesSupported>1</ModesSupported>
     <Position>BACK</Position>
