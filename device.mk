@@ -148,11 +148,11 @@ PRODUCT_PACKAGES += \
     libshim_pthreadts
 
 PRODUCT_COPY_FILES += \
-    $(LOCAL_PATH)/configs/camera/imx214_chromatix.xml:system/etc/camera/imx214_chromatix.xml \
-    $(LOCAL_PATH)/configs/camera/pantech_camera_tp10.xml:system/etc/camera/pantech_camera_tp10.xml \
-    $(LOCAL_PATH)/configs/camera/pantech_camera_tp20.xml:system/etc/camera/pantech_camera_tp20.xml \
-    $(LOCAL_PATH)/configs/camera/pantech_camera_ws10.xml:system/etc/camera/pantech_camera_ws10.xml \
-    $(LOCAL_PATH)/configs/camera/s5k5e2_chromatix.xml:system/etc/camera/s5k5e2_chromatix.xml
+    $(LOCAL_PATH)/configs/camera/imx214_chromatix.xml:$(TARGET_COPY_OUT_VENDOR)/etc/camera/imx214_chromatix.xml \
+    $(LOCAL_PATH)/configs/camera/pantech_camera_tp10.xml:$(TARGET_COPY_OUT_VENDOR)/etc/camera/pantech_camera_tp10.xml \
+    $(LOCAL_PATH)/configs/camera/pantech_camera_tp20.xml:$(TARGET_COPY_OUT_VENDOR)/etc/camera/pantech_camera_tp20.xml \
+    $(LOCAL_PATH)/configs/camera/pantech_camera_ws10.xml:$(TARGET_COPY_OUT_VENDOR)/etc/camera/pantech_camera_ws10.xml \
+    $(LOCAL_PATH)/configs/camera/s5k5e2_chromatix.xml:$(TARGET_COPY_OUT_VENDOR)/etc/camera/s5k5e2_chromatix.xml
 
 # Display
 PRODUCT_PACKAGES += \
