@@ -199,19 +199,8 @@
     <hal format="hidl">
         <name>android.hardware.radio</name>
         <transport>hwbinder</transport>
-        <version>1.2</version>
-        <interface>
-            <name>IRadio</name>
-            <instance>slot1</instance>
-            <instance>slot2</instance>
-        </interface>
-        <interface>
-            <name>ISap</name>
-            <instance>slot1</instance>
-            <instance>slot2</instance>
-        </interface>
-        <fqname>@1.2::IRadio/slot1</fqname>
-        <fqname>@1.2::IRadio/slot2</fqname>
+        <fqname>@1.1::IRadio/slot1</fqname>
+        <fqname>@1.1::IRadio/slot2</fqname>
         <fqname>@1.2::ISap/slot1</fqname>
         <fqname>@1.2::ISap/slot2</fqname>
     </hal>
@@ -223,7 +212,6 @@
             <name>IRadioConfig</name>
             <instance>default</instance>
         </interface>
-        <fqname>@1.0::IRadioConfig/default</fqname>
     </hal>
     <hal format="hidl">
         <name>android.hardware.renderscript</name>
@@ -345,22 +333,20 @@
     <hal format="hidl">
         <name>com.qualcomm.qti.imscmservice</name>
         <transport>hwbinder</transport>
-        <version>2.1</version>
+        <version>2.2</version>
         <interface>
             <name>IImsCmService</name>
             <instance>qti.ims.connectionmanagerservice</instance>
         </interface>
-        <fqname>@2.1::IImsCmService/qti.ims.connectionmanagerservice</fqname>
     </hal>
     <hal format="hidl">
         <name>com.qualcomm.qti.uceservice</name>
         <transport>hwbinder</transport>
-        <version>2.0</version>
+        <version>2.1</version>
         <interface>
             <name>IUceService</name>
             <instance>com.qualcomm.qti.uceservice</instance>
         </interface>
-        <fqname>@2.0::IUceService/com.qualcomm.qti.uceservice</fqname>
     </hal>
     <hal format="hidl">
         <name>com.qualcomm.qti.wifidisplayhal</name>
@@ -566,16 +552,6 @@
             <name>IQtiOemHook</name>
             <instance>oemhook0</instance>
             <instance>oemhook1</instance>
-        </interface>
-    </hal>
-    <hal format="hidl">
-        <name>vendor.qti.hardware.radio.qtiradio</name>
-        <transport>hwbinder</transport>
-        <version>1.0</version>
-        <interface>
-            <name>IQtiRadio</name>
-            <instance>slot1</instance>
-            <instance>slot2</instance>
         </interface>
     </hal>
     <hal format="hidl">
