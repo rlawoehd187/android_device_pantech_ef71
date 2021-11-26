@@ -170,6 +170,7 @@ PRODUCT_PACKAGES += \
     libdisplayconfig \
     libgenlock \
     libtinyxml \
+    libqdMetaData.system
 
 # DRM
 PRODUCT_PACKAGES += \
@@ -336,6 +337,13 @@ PRODUCT_PACKAGES += \
     librmnetctl \
     libprotobuf-cpp-full \
     libxml2
+
+# RCS
+PRODUCT_PACKAGES += \
+    rcs_service_aidl \
+    rcs_service_aidl.xml \
+    rcs_service_api \
+    rcs_service_api.xml
 
 # Seccomp policy
 PRODUCT_COPY_FILES += \
