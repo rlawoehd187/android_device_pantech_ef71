@@ -1,2 +1,4 @@
-allow mdtpdaemon system_data_file:fifo_file { read write open };
+allow mdtpdaemon system_data_file:fifo_file { read write open create };
+allow mdtpdaemon system_data_file:dir { add_name write create };
 allow mdtpdaemon servicemanager:binder { call transfer };
+allow mdtpdaemon mdtpdaemon_service:service_manager { add find };
