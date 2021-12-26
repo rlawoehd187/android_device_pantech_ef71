@@ -217,6 +217,7 @@ persist.data.netmgrd.qos.enable=true
 persist.vendor.data.mode=concurrent
 ro.vendor.use_data_netmgrd=true
 persist.radio.schd.cache=3500
+persist.radio.block_allow_data=1
 
 # Hardware Info
 ro.device.chipset=Qualcomm MSM8937 Snapdragon 430
