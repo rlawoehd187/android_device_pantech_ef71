@@ -50,6 +50,7 @@ TARGET_NO_BOOTLOADER := true
 # kernel
 BOARD_KERNEL_BASE		:= 0x80000000
 BOARD_KERNEL_CMDLINE 		:= androidboot.hardware=qcom msm_rtb.filter=0x237 ehci-hcd.park=3 lpm_levels.sleep_disabled=1 androidboot.bootdevice=7824900.sdhci earlycon=msm_hsl_uart,0x78B0000 androidboot.usbconfigfs=false loop.max_part=7
+BOARD_KERNEL_CMDLINE += androidboot.selinux=permissive
 BOARD_KERNEL_IMAGE_NAME 	:= Image.gz-dtb
 BOARD_KERNEL_PAGESIZE 		:=  2048
 BOARD_MKBOOTIMG_ARGS 		:= --ramdisk_offset 0x01000000 --second_offset 0x00f00000 --tags_offset 0x00000100
@@ -194,9 +195,6 @@ TARGET_FS_CONFIG_GEN += $(DEVICE_PATH)/config.fs
 BOARD_HARDWARE_CLASS += \
     $(DEVICE_PATH)/lineagehw
 
-# Media
-TARGET_USES_MEDIA_EXTENSIONS := true
-
 # Partitions
 BOARD_FLASH_BLOCK_SIZE := 131072 # (BOARD_KERNEL_PAGESIZE * 64)
 BOARD_BOOTIMAGE_PARTITION_SIZE := 67108864
@@ -234,7 +232,7 @@ BOARD_SEPOLICY_DIRS += \
 include device/qcom/sepolicy-legacy-um/SEPolicy.mk
 
 # SHIMS
-TARGET_LD_SHIM_LIBS := \
+#TARGET_LD_SHIM_LIBS := \
     /system/vendor/lib/hw/camera.msm8937.so|/system/lib/libshim_camera.so \
     /system/vendor/bin/mm-qcamera-daemon|libshim_pthreadts.so \
     /system/vendor/bin/mm-qcamera-daemon|libshim_mutexdestroy.so \
