@@ -56,8 +56,9 @@ TARGET_KERNEL_CONFIG := LineageOS_ef71_defconfig
 TARGET_KERNEL_SOURCE := kernel/pantech/msm8937
 TARGET_EXFAT_DRIVER := sdfat
 
+
 # ANT
-BOARD_ANT_WIRELESS_DEVICE := "vfs-prerelease"
+BOARD_ANT_WIRELESS_DEVICE := "qualcomm-hidl"
 
 # Audio
 AUDIO_USE_LL_AS_PRIMARY_OUTPUT := true
