@@ -168,6 +168,9 @@ on boot
     #Create WIGIG socket area
     mkdir /dev/socket/wigig 0770 wifi wifi
 
+    #Create NETMGR daemon socket area
+    mkdir /dev/socket/netmgr 0750 radio radio
+
     setprop wifi.interface wlan0
 
     setprop ro.telephony.call_ring.multiple false
@@ -386,6 +389,10 @@ on post-fs-data
     # Create directory for radio
     mkdir /data/vendor/radio 0770 system radio
     rm /data/vendor/radio/shmbus
+
+    # Create netmgr log dir
+    mkdir /data/vendor/netmgr 0770 radio radio
+    chmod 0770 /data/vendor/netmgr
 
     # Create directory used by display clients
 
@@ -711,7 +718,7 @@ service qmuxd /system/bin/qmuxd
     user root
     group radio audio bluetooth gps nfc oem_2901
 
-service vendor.netmgrd /system/vendor/bin/netmgrd
+service vendor.netmgrd /vendor/bin/netmgrd
     class main
 
 service vendor.ipacm-diag /system/vendor/bin/ipacm-diag
@@ -743,10 +750,6 @@ service qvop-daemon /vendor/bin/qvop-daemon
     class late_start
     user system
     group system drmrpc
-
-on property:ro.vendor.use_data_netmgrd=false
-    # netmgr not supported on specific target
-    stop vendor.netmgrd
 
 # Adjust socket buffer to enlarge TCP receive window for high bandwidth
 # but only if ro.data.large_tcp_window_size property is set.
