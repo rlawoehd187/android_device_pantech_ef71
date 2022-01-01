@@ -31,6 +31,11 @@ on enable-low-power
     write /sys/devices/system/cpu/cpu4/core_ctl/is_big_cluster 0
     write /sys/devices/system/cpu/cpu4/core_ctl/task_thres 10
 
+    # input boost configuration
+    write /sys/module/cpu_boost/parameters/input_boost_freq "0:1209600 5:1094400"
+    write /sys/module/cpu_boost/parameters/input_boost_ms 40
+
+
 on charger
     # Offline all cores other than CPU0
     write /sys/devices/system/cpu/cpu1/online 0
