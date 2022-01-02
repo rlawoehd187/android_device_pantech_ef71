@@ -13,3 +13,7 @@
 
 # VirtualKeys
 /sys/board_properties/virtualkeys.*         u:object_r:sysfs_virtualkeys:s0
+
+# TimeKeep
+/sys/devices/soc/qpnp-rtc-8/rtc/rtc0(/.*)?                         u:object_r:sysfs_rtc:s0
+/(system/vendor|vendor)/bin/timekeep                               u:object_r:timekeep_exec:s0
