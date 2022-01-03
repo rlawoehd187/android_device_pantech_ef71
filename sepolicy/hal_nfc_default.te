@@ -1,3 +1,4 @@
 allow hal_nfc_default default_android_hwservice:hwservice_manager { find add };
 allow hal_nfc_default device:chr_file { read write open ioctl };
-allow hal_nfc_default nfc_vendor_data_file:dir search;
+allow hal_nfc_default nfc_vendor_data_file:dir { search write add_name };
+allow hal_nfc_default nfc_vendor_data_file:file create;
