@@ -1,0 +1,6 @@
+allow mm-qcamerad camera_data_file:dir { search write remove_name add_name };
+allow mm-qcamerad camera_data_file:sock_file { unlink create };
+allow mm-qcamerad camera_data_file:file { read write };
+allow mm-qcamerad servicemanager:binder call;
+allow mm-qcamerad sensorservice_service:service_manager find;
+allow mm-qcamerad system_server:unix_stream_socket { read write };
