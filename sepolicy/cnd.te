@@ -1,1 +1,2 @@
 allow cnd wifi_prop:file { read open getattr };
+allow cnd system_app:binder transfer;
