@@ -1,1 +1,5 @@
 allow qti_init_shell sysfs:file { rw_file_perms };
+allow qti_init_shell persist_file:dir getattr;
+allow qti_init_shell qti_init_shell:capability dac_override;
+allow qti_init_shell vendor_radio_data_file:dir { search getattr };
+allow qti_init_shell vendor_radio_data_file:file { getattr read write open };
