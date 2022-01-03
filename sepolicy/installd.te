@@ -1,0 +1,2 @@
+allow installd device:file { write open };
+allow installd adsprpcd_file:filesystem quotaget;
