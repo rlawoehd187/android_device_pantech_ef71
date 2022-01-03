@@ -1,6 +1,16 @@
-allow init sysfs_dt2w:file { setattr };
 allow init sysfs_leds:lnk_file { read };
 allow init system_data_file:sock_file write;
+allow init system_data_file:fifo_file write;
 allow init system_server:fd use;
 allow init system_server:unix_stream_socket { read write };
 allow init adsprpcd_file:filesystem { mount relabelfrom relabelto };
+allow init sysfs:file setattr;
+allow init vendor_file:file execute_no_trans;
+allow init vndbinder_device:chr_file { read write open ioctl };
+allow init hwservicemanager:binder { call transfer };
+allow init hal_drm_hwservice:hwservice_manager add;
+allow init hidl_base_hwservice:hwservice_manager add;
+allow init shell_exec:file execute_no_trans;
+allow init tee_device:chr_file { read write open ioctl };
+allow init ion_device:chr_file { read open ioctl };
+allow init default_android_service:service_manager { find add };
