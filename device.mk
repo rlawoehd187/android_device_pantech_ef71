@@ -483,8 +483,5 @@ PRODUCT_PACKAGES += \
     libaacwrapper \
     libnl
 
- PRODUCT_BOOT_JARS += \
-    WfdCommon
-
 # Inherit proprietary files
 $(call inherit-product-if-exists, vendor/pantech/ef71/ef71-vendor.mk)
