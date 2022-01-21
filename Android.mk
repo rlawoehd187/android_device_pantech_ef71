@@ -64,32 +64,6 @@ $(LOCAL_BUILT_MODULE):
 
 include $(call all-makefiles-under,$(LOCAL_PATH))
 
-include $(CLEAR_VARS)
-
-LOCAL_MODULE := vendor_fs_symlinks
-LOCAL_MODULE_TAGS := optional
-LOCAL_MODULE_CLASS := FAKE
-LOCAL_MODULE_SUFFIX := -timestamp
-
-include $(BUILD_SYSTEM)/base_rules.mk
-
-$(LOCAL_BUILT_MODULE): ACTUAL_FIRMWARE_LOCATE := /firmware
-$(LOCAL_BUILT_MODULE): FIRMWARE_MNT_SYMLINK := $(TARGET_OUT_VENDOR)/firmware_mnt
-
-$(LOCAL_BUILT_MODULE): ACTUAL_DSP_LOCATE := /dsp
-$(LOCAL_BUILT_MODULE): DSP_SYMLINK := $(TARGET_OUT_VENDOR)/dsp
-
-$(LOCAL_BUILT_MODULE): $(LOCAL_PATH)/Android.mk
-$(LOCAL_BUILT_MODULE):
-	$(hide) echo "Making symlinks for some partitions."
-	$(hide) rm -rf $(FIRMWARE_MNT_SYMLINK)
-	$(hide) ln -sf $(ACTUAL_FIRMWARE_LOCATE) $(FIRMWARE_MNT_SYMLINK)
-	$(hide) rm -rf $(DSP_SYMLINK)
-	$(hide) ln -sf $(ACTUAL_DSP_LOCATE) $(DSP_SYMLINK)
-	$(hide) touch $@
-
-include $(call all-makefiles-under,$(LOCAL_PATH))
-
 IMS_LIBS := libimscamera_jni.so libimsmedia_jni.so
 
 IMS_SYMLINKS := $(addprefix $(TARGET_OUT)/app/ims/lib/arm64/,$(notdir $(IMS_LIBS)))
